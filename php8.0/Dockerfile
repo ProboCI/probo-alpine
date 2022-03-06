@@ -21,7 +21,7 @@ RUN apk update && \
   openrc nodejs-current mysql mysql-client php8-apache2 postgresql-client postgresql openjdk8-jre wget bash chromium \
   chromium-chromedriver php8 php8-bcmath php8-bz2 php8-curl php8-dba php8-gd php8-intl php8-ldap php8-mbstring php8-mysqli \
   php8-opcache php8-pdo_mysql php8-pdo_pgsql php8-soap php8-xml php8-zip php8-pecl-redis php8-pecl-memcached lsof \
-  php8-pecl-imagick php8-pear git vim zip gzip bzip2 pv rsync xvfb varnish curl php8-cgi php8-common nullmailer \
+  php8-pecl-imagick php8-pear git vim zip gzip bzip2 pv rsync xvfb varnish curl php8-cgi php8-common sudo \
   php8-cli mlocate php8-phar php8-dom php8-tokenizer mariadb-openrc apache2-ctl npm redis memcached 
 
 # RUN apk add --no-cache \
@@ -98,8 +98,27 @@ RUN mkdir -p /opt/solr && \
   mv solr-$SOLR_VERSION/* solr/ && \
   rm /opt/solr.tgz* && \
   mkdir -p /opt/solr/server/solr/lib && \
-  chown -R $SOLR_USER:$SOLR_USER /opt/solr
+  chown -R $SOLR_USER:$SOLR_USER /opt/solr \
+  && /opt/solr/bin/solr -force \
+  && wget https://ftp.drupal.org/files/projects/search_api_solr-7.x-1.15.tar.gz \
+  && tar xzf search_api_solr-7.x-1.15.tar.gz \
+  && mv search_api_solr /opt/solr/. \
+  && /opt/solr/bin/solr create -c drupal7 -d "/opt/solr/search_api_solr/solr-conf/7.x" -force \
+  && wget https://ftp.drupal.org/files/projects/search_api_solr-4.2.7.tar.gz \
+  && rm -rf /opt/solr/search_api_solr \
+  && tar xzf search_api_solr-4.2.7.tar.gz \
+  && mv search_api_solr /opt/solr/. \
+  && /opt/solr/bin/solr create -c drupal8 -d "/opt/solr/search_api_solr/jump-start/solr7/config-set" -force \
+  && /opt/solr/bin/solr stop -all
 
 COPY files/mysql-setup.sql /mysql-setup.sql
-COPY files/probo.cnf .my.cnf
-COPY files/probo-mysql.cnf /etc/mysql/mysql.conf.d/probo-mysql.cnf
+COPY files/mycnf.txt /root/.my.cnf
+COPY files/probo-mysql.cnf /etc/my.cnf.d/probo-mysql.cnf
+
+COPY files/apache-default-host.conf /etc/apache2/conf.d/apache-default-host.conf
+#COPY files/apache-default-varnish-host.conf /etc/apache2/sites-available/000-default-varnish.conf
+COPY files/listen_8080.conf /etc/apache2/conf.d/listen_8080.conf
+RUN mkdir -p /var/www/html
+
+# RUN touch text.txt
+# CMD ["tail", "-f", "text.txt"]
