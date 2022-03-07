@@ -16,13 +16,15 @@ LABEL description="ProboCI's PHP 8 image based off Alpine Linux"
 LABEL author="Michael R. Bagnall <mbagnall@zivtech.com>"
 LABEL vendor="ProboCI, LLC."
 
+ENV TERM xterm
+
 RUN apk update && \
   apk add --no-cache \
   openrc nodejs-current mysql mysql-client php8-apache2 postgresql-client postgresql openjdk8-jre wget bash chromium \
   chromium-chromedriver php8 php8-bcmath php8-bz2 php8-curl php8-dba php8-gd php8-intl php8-ldap php8-mbstring php8-mysqli \
   php8-opcache php8-pdo_mysql php8-pdo_pgsql php8-soap php8-xml php8-zip php8-pecl-redis php8-pecl-memcached lsof \
-  php8-pecl-imagick php8-pear git vim zip gzip bzip2 pv rsync xvfb varnish curl php8-cgi php8-common sudo \
-  php8-cli mlocate php8-phar php8-dom php8-tokenizer mariadb-openrc apache2-ctl npm redis memcached 
+  php8-pecl-imagick php8-pear git vim zip gzip bzip2 pv rsync xvfb varnish curl php8-cgi php8-common sudo php8-simplexml \
+  php8-cli mlocate php8-phar php8-dom php8-tokenizer mariadb-openrc apache2-ctl npm redis memcached ncurses
 
 # RUN apk add --no-cache \
 #   make
@@ -116,6 +118,8 @@ COPY files/mycnf.txt /root/.my.cnf
 COPY files/probo-mysql.cnf /etc/my.cnf.d/probo-mysql.cnf
 
 COPY files/apache-default-host.conf /etc/apache2/conf.d/apache-default-host.conf
+COPY files/ssl_environment_variable.conf /etc/apache2/conf.d/ssl_environment_variable.conf
+COPY files/httpd.conf /etc/apache2/httpd.conf
 #COPY files/apache-default-varnish-host.conf /etc/apache2/sites-available/000-default-varnish.conf
 COPY files/listen_8080.conf /etc/apache2/conf.d/listen_8080.conf
 RUN mkdir -p /var/www/html
