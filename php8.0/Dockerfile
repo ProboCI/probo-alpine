@@ -12,7 +12,7 @@
 FROM alpine:latest
 
 LABEL name="ProboCI PHP 8.0 Image"
-LABEL description="ProboCI's PHP 8 image based off Alpine Linux"
+LABEL description="ProboCI's PHP 8.0 image based off Alpine Linux"
 LABEL author="Michael R. Bagnall <mbagnall@zivtech.com>"
 LABEL vendor="ProboCI, LLC."
 
