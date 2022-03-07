@@ -3,15 +3,15 @@
 # These images are built using Dockerfile inheritance to build the images used for Probo.CI.
 #
 # Image: proboci/alpine
-# Tag: php8.0
+# Tag: php7.4
 # 
-# Build the proboci/alpine:php8.0
-# docker build . -t proboci/alpine:php8.0
-# docker push proboci/alpine:php8.0
+# Build the proboci/alpine:php7.4
+# docker build . -t proboci/alpine:php7.4
+# docker push proboci/alpine:php7.4
 
 FROM alpine:latest
 
-LABEL name="ProboCI PHP 8.0 Image"
+LABEL name="ProboCI PHP 7.4 Image"
 LABEL description="ProboCI's PHP 8 image based off Alpine Linux"
 LABEL author="Michael R. Bagnall <mbagnall@zivtech.com>"
 LABEL vendor="ProboCI, LLC."
@@ -21,15 +21,15 @@ ENV TERM xterm
 # Install all of our base packages for making the image work.
 RUN apk update && \
   apk add --no-cache \
-  openrc nodejs-current mysql mysql-client php8-apache2 postgresql-client postgresql openjdk8-jre wget bash chromium \
-  chromium-chromedriver php8 php8-bcmath php8-bz2 php8-curl php8-dba php8-gd php8-intl php8-ldap php8-mbstring php8-mysqli \
-  php8-opcache php8-pdo_mysql php8-pdo_pgsql php8-soap php8-xml php8-zip php8-pecl-redis php8-pecl-memcached lsof \
-  php8-pecl-imagick php8-pear git vim zip gzip bzip2 pv rsync xvfb varnish curl php8-cgi php8-common sudo php8-simplexml \
-  php8-cli mlocate php8-phar php8-dom php8-tokenizer mariadb-openrc apache2-ctl npm redis memcached ncurses php8-ctype \
-  php8-xmlwriter patch xvfb-run xvfb
+  openrc nodejs-current mysql mysql-client php7-apache2 postgresql-client postgresql openjdk8-jre wget bash chromium \
+  chromium-chromedriver php7 php7-bcmath php7-bz2 php7-curl php7-dba php7-gd php7-intl php7-ldap php7-mbstring php7-mysqli \
+  php7-opcache php7-pdo_mysql php7-pdo_pgsql php7-soap php7-xml php7-zip php7-pecl-redis php7-pecl-memcached lsof \
+  php7-pecl-imagick php7-pear git vim zip gzip bzip2 pv rsync xvfb varnish curl php7-cgi php7-common sudo php7-simplexml \
+  php7-cli mlocate php7-phar php7-dom php7-tokenizer mariadb-openrc apache2-ctl npm redis memcached ncurses php7-ctype \
+  php7-xmlwriter patch xvfb-run xvfb
 
-# By default, alpine puts PHP in as "php7" or "php8". We need to homogenize it.
-RUN ln -s /usr/bin/php8 /bin/php
+# By default, alpine puts PHP in as "php7" or "php7". We need to homogenize it.
+RUN ln -s /usr/bin/php7 /bin/php
 
 # For compatibility with Ubuntu, create a symlink to chromedriver from the Ubuntu location.
 RUN ln -s /usr/bin/chromedriver /usr/local/bin/chromedriver
@@ -38,7 +38,7 @@ RUN ln -s /usr/bin/chromedriver /usr/local/bin/chromedriver
 RUN mkdir -p /usr/local/src/drush9
 RUN mkdir -p /usr/local/src/drush8
 RUN mkdir -p /usr/local/src/drush-launcher
-RUN apk add php8-cli && curl -sS https://getcomposer.org/installer | php -- \
+RUN apk add php7-cli && curl -sS https://getcomposer.org/installer | php -- \
   --install-dir=/usr/local/bin \
   --filename=composer \
   && composer \
