@@ -18,6 +18,7 @@ LABEL vendor="ProboCI, LLC."
 
 ENV TERM xterm
 
+# Install all of our base packages for making the image work.
 RUN apk update && \
   apk add --no-cache \
   openrc nodejs-current mysql mysql-client php8-apache2 postgresql-client postgresql openjdk8-jre wget bash chromium \
@@ -26,9 +27,7 @@ RUN apk update && \
   php8-pecl-imagick php8-pear git vim zip gzip bzip2 pv rsync xvfb varnish curl php8-cgi php8-common sudo php8-simplexml \
   php8-cli mlocate php8-phar php8-dom php8-tokenizer mariadb-openrc apache2-ctl npm redis memcached ncurses
 
-# RUN apk add --no-cache \
-#   make
-
+# By default, alpine puts PHP in as "php7" or "php8". We need to homogenize it.
 RUN ln -s /usr/bin/php8 /bin/php
 
 # Install composer and drush.
@@ -70,10 +69,12 @@ RUN curl -o /tmp/wp-cli.phar https://raw.githubusercontent.com/wp-cli/builds/gh-
   && chmod +x /tmp/wp-cli.phar \
   && mv /tmp/wp-cli.phar /bin/wp
 
+# Install the Acquia Command Line Tools
 RUN curl -OL https://github.com/acquia/cli/releases/latest/download/acli.phar \
   && chmod +x acli.phar \
   && mv acli.phar /bin/acli
 
+# Install the Backdrop CMS tool Bee
 RUN cd /root && \
   wget https://github.com/ElusiveMind/bee/archive/refs/heads/bugfix/context-variable.zip && \
   unzip context-variable.zip && \
@@ -124,5 +125,5 @@ COPY files/httpd.conf /etc/apache2/httpd.conf
 COPY files/listen_8080.conf /etc/apache2/conf.d/listen_8080.conf
 RUN mkdir -p /var/www/html
 
-# RUN touch text.txt
-# CMD ["tail", "-f", "text.txt"]
+COPY files/valid-user.sh /bin/valid
+RUN chmod 755 /bin/versionizer /bin/valid
