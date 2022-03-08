@@ -9,7 +9,7 @@
 # docker build . -t proboci/alpine:php8.0
 # docker push proboci/alpine:php8.0
 
-FROM alpine:latest
+FROM alpine:3.15
 
 LABEL name="ProboCI PHP 8.0 Image"
 LABEL description="ProboCI's PHP 8.0 image based off Alpine Linux"
@@ -21,10 +21,10 @@ ENV TERM xterm
 # Install all of our base packages for making the image work.
 RUN apk update && \
   apk add --no-cache \
-  openrc nodejs-current mysql mysql-client php8-apache2 postgresql-client postgresql openjdk8-jre wget bash chromium \
+  openrc nodejs mysql mysql-client php8-apache2 postgresql-client postgresql openjdk8-jre wget bash chromium \
   chromium-chromedriver php8 php8-bcmath php8-bz2 php8-curl php8-dba php8-gd php8-intl php8-ldap php8-mbstring php8-mysqli \
   php8-opcache php8-pdo_mysql php8-pdo_pgsql php8-soap php8-xml php8-zip php8-pecl-redis php8-pecl-memcached lsof \
-  php8-pecl-imagick php8-pear git vim zip gzip bzip2 pv rsync xvfb varnish curl php8-cgi php8-common sudo php8-simplexml \
+  php8-pecl-imagick php8-pear git vim zip gzip bzip2 pv rsync varnish curl php8-cgi php8-common sudo php8-simplexml \
   php8-cli mlocate php8-phar php8-dom php8-tokenizer mariadb-openrc apache2-ctl npm redis memcached ncurses php8-ctype \
   php8-xmlwriter patch xvfb-run xvfb
 

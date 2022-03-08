@@ -26,7 +26,7 @@ RUN apk update
 # Install all of our base packages for making the image work.
 RUN apk update && \
   apk add --no-cache \
-  openrc nodejs-current mysql mysql-client php81-apache2 postgresql-client postgresql openjdk8-jre wget bash chromium \
+  openrc nodejs mysql mysql-client php81-apache2 postgresql-client postgresql openjdk8-jre wget bash chromium \
   chromium-chromedriver php8 php81-bcmath php81-bz2 php81-curl php81-dba  php81-ldap php81-mbstring php81-mysqli \
   php81-opcache php81-pdo_mysql php81-pdo_pgsql php81-soap php81-xml php81-zip php81-pecl-redis php81-pecl-memcached lsof \
   php81-pecl-imagick php81-pear git vim zip gzip bzip2 pv rsync xvfb varnish curl php81-cgi php81-common sudo php81-simplexml \
