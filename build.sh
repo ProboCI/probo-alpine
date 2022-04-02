@@ -5,3 +5,6 @@ cd ./php7.4/
 
 cd ../php8.0/
 ./build.sh $1
+
+# cd ../php8.1/
+# ./buildf.sh $1
