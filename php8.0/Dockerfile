@@ -9,7 +9,7 @@
 # docker build . -t proboci/alpine:php8.0
 # docker push proboci/alpine:php8.0
 
-FROM alpine:3.15.3
+FROM alpine:3.15.4
 
 LABEL name="ProboCI PHP 8.0 Image"
 LABEL description="ProboCI's PHP 8.0 image based off Alpine Linux"
