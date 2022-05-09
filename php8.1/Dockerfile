@@ -31,7 +31,7 @@ RUN apk update && \
   php81-opcache php81-pdo_mysql php81-pdo_pgsql php81-soap php81-xml php81-zip php81-pecl-redis php81-pecl-memcached lsof \
   php81-pecl-imagick php81-pear git vim zip gzip bzip2 pv rsync xvfb varnish curl php81-cgi php81-common sudo php81-simplexml \
   php81-cli mlocate php81-phar php81-dom php81-tokenizer mariadb-openrc apache2-ctl npm redis memcached ncurses php81-ctype \
-  php81-iconv
+  php81-iconv apache2-proxy
 
 # By default, alpine puts PHP in as "php7" or "php8". We need to homogenize it.
 RUN ln -s /usr/bin/php8 /bin/php
