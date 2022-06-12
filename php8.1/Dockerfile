@@ -9,7 +9,7 @@
 # docker build . -t proboci/alpine:php8.1
 # docker push proboci/alpine:php8.1
 
-FROM alpine:edge
+FROM alpine:3.16
 
 LABEL name="ProboCI PHP 8.1 Image"
 LABEL description="ProboCI's PHP 8 image based off Alpine Linux"
@@ -17,11 +17,6 @@ LABEL author="Michael R. Bagnall <mbagnall@zivtech.com>"
 LABEL vendor="ProboCI, LLC."
 
 ENV TERM xterm
-
-RUN echo "https://dl-cdn.alpinelinux.org/alpine/v3.15/main/" >> /etc/apk/repositories
-RUN echo "https://dl-cdn.alpinelinux.org/alpine/v3.15/community/" >> /etc/apk/repositories
-RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories
-RUN apk update
 
 # Install all of our base packages for making the image work.
 RUN apk update && \
@@ -31,7 +26,7 @@ RUN apk update && \
   php81-opcache php81-pdo_mysql php81-pdo_pgsql php81-soap php81-xml php81-zip php81-pecl-redis php81-pecl-memcached lsof \
   php81-pecl-imagick php81-pear git vim zip gzip bzip2 pv rsync xvfb varnish curl php81-cgi php81-common sudo php81-simplexml \
   php81-cli mlocate php81-phar php81-dom php81-tokenizer mariadb-openrc apache2-ctl npm redis memcached ncurses php81-ctype \
-  php81-iconv apache2-proxy
+  php81-iconv apache2-proxy php81-gd
 
 # By default, alpine puts PHP in as "php7" or "php8". We need to homogenize it.
 RUN ln -s /usr/bin/php81 /bin/php
@@ -101,7 +96,7 @@ ENV SOLR_USER root
 ENV SOLR_UID 8983
 ENV SOLR_VERSION 7.7.3
 RUN mkdir -p /opt/solr && \
-  wget -nv --output-document=/opt/solr.tgz http://archive.apache.org/dist/lucene/solr/$SOLR_VERSION/solr-$SOLR_VERSION.tgz && \
+  wget -nv --output-document=/opt/solr.tgz https://proofroom.s3.amazonaws.com/solr-$SOLR_VERSION.tgz && \
   cd /opt && \
   tar xzf solr.tgz && \
   mv solr-$SOLR_VERSION/* solr/ && \

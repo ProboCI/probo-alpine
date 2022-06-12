@@ -99,7 +99,7 @@ ENV SOLR_USER root
 ENV SOLR_UID 8983
 ENV SOLR_VERSION 7.7.3
 RUN mkdir -p /opt/solr && \
-  wget -nv --output-document=/opt/solr.tgz http://archive.apache.org/dist/lucene/solr/$SOLR_VERSION/solr-$SOLR_VERSION.tgz && \
+  wget -nv --output-document=/opt/solr.tgz https://proofroom.s3.amazonaws.com/solr-$SOLR_VERSION.tgz && \
   cd /opt && \
   tar xzf solr.tgz && \
   mv solr-$SOLR_VERSION/* solr/ && \
