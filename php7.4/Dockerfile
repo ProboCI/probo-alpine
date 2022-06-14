@@ -18,6 +18,9 @@ LABEL vendor="ProboCI, LLC."
 
 ENV TERM xterm
 
+# Copy our Alpine compiled iconv library
+COPY files/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
+
 # Install all of our base packages for making the image work.
 RUN apk update && \
   apk add --no-cache \
@@ -26,10 +29,13 @@ RUN apk update && \
   php7-opcache php7-pdo_mysql php7-pdo_pgsql php7-soap php7-xml php7-zip php7-pecl-redis php7-pecl-memcached lsof \
   php7-pecl-imagick php7-pear git vim zip gzip bzip2 pv rsync varnish curl php7-cgi php7-common sudo php7-simplexml \
   php7-cli mlocate php7-phar php7-dom php7-tokenizer mariadb-openrc apache2-ctl npm redis memcached ncurses php7-ctype \
-  php7-xmlwriter patch xvfb-run xvfb apache2-proxy
+  php7-xmlwriter patch xvfb-run xvfb apache2-proxy php7-iconv gnu-libiconv
 
 # By default, alpine puts PHP in as "php7" or "php7". We need to homogenize it.
 RUN ln -s /usr/bin/php7 /bin/php
+
+# Attempt to resolve our iconv problems
+ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 # For compatibility with Ubuntu, create a symlink to chromedriver from the Ubuntu location.
 RUN ln -s /usr/bin/chromedriver /usr/local/bin/chromedriver
