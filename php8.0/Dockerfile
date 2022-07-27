@@ -129,11 +129,17 @@ COPY files/mycnf.txt /root/.my.cnf
 COPY files/probo-mysql.cnf /etc/my.cnf.d/probo-mysql.cnf
 
 COPY files/apache-default-host.conf /etc/apache2/conf.d/apache-default-host.conf
+COPY files/apache-default-host-init.conf /root/apache-default-host-init.conf
+COPY files/graceful-startup.sh /root/graceful-startup.sh
 COPY files/ssl_environment_variable.conf /etc/apache2/conf.d/ssl_environment_variable.conf
 COPY files/httpd.conf /etc/apache2/httpd.conf
 #COPY files/apache-default-varnish-host.conf /etc/apache2/sites-available/000-default-varnish.conf
 COPY files/listen_8080.conf /etc/apache2/conf.d/listen_8080.conf
 RUN mkdir -p /var/www/html
+RUN chmod 755 /root/graceful-startup.sh
+
+RUN mkdir -p /var/www/startup
+COPY files/startup-index.html /var/www/startup/index.html
 
 COPY files/valid-user.sh /bin/valid
 RUN chmod 755 /bin/versionizer /bin/valid
