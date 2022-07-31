@@ -132,8 +132,6 @@ COPY files/mycnf.txt /root/.my.cnf
 COPY files/probo-mysql.cnf /etc/my.cnf.d/probo-mysql.cnf
 
 COPY files/apache-default-host.conf /etc/apache2/conf.d/apache-default-host.conf
-COPY files/apache-default-host-init.conf /root/apache-default-host-init.conf
-COPY files/graceful-startup.sh /root/graceful-startup.sh
 COPY files/ssl_environment_variable.conf /etc/apache2/conf.d/ssl_environment_variable.conf
 COPY files/httpd.conf /etc/apache2/httpd.conf
 #COPY files/apache-default-varnish-host.conf /etc/apache2/sites-available/000-default-varnish.conf
