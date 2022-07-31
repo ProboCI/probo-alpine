@@ -63,6 +63,7 @@ COPY files/drushrc.php /etc/drush/drushrc.php
 COPY files/versionizer.php /bin/versionizer
 RUN wget -O /usr/local/src/drush-launcher/drush https://github.com/drush-ops/drush-launcher/releases/latest/download/drush.phar
 RUN chmod +x /usr/local/src/drush-launcher/drush
+RUN echo "drush() { /usr/local/bin/drush -r /var/www/html \$@ }" >> /root/.bashrc
 
 # Install Proboscis
 RUN npm install -g proboscis --unsafe
