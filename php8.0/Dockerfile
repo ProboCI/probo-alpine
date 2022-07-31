@@ -18,13 +18,15 @@ LABEL vendor="ProboCI, LLC."
 
 ENV TERM xterm
 
+ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/src/vendor/bin
+
 # Copy our Alpine compiled iconv library
 COPY files/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
 
 # Install all of our base packages for making the image work.
 RUN apk update && \
   apk add --no-cache \
-  openrc nodejs mysql mysql-client php8-apache2 postgresql-client postgresql openjdk8-jre wget bash chromium \
+  openrc nodejs mariadb mariadb-client php8-apache2 postgresql-client postgresql openjdk8-jre wget bash chromium \
   chromium-chromedriver php8 php8-bcmath php8-bz2 php8-curl php8-dba php8-gd php8-intl php8-ldap php8-mbstring php8-mysqli \
   php8-opcache php8-pdo_mysql php8-pdo_pgsql php8-soap php8-xml php8-zip php8-pecl-redis php8-pecl-memcached lsof \
   php8-pecl-imagick php8-pear git vim zip gzip bzip2 pv rsync varnish curl php8-cgi php8-common sudo php8-simplexml \
@@ -117,9 +119,9 @@ RUN mkdir -p /opt/solr && \
   && tar xzf search_api_solr-7.x-1.15.tar.gz \
   && mv search_api_solr /opt/solr/. \
   && /opt/solr/bin/solr create -c drupal7 -d "/opt/solr/search_api_solr/solr-conf/7.x" -force \
-  && wget https://ftp.drupal.org/files/projects/search_api_solr-4.2.7.tar.gz \
+  && wget https://ftp.drupal.org/files/projects/search_api_solr-4.2.8.tar.gz \
   && rm -rf /opt/solr/search_api_solr \
-  && tar xzf search_api_solr-4.2.7.tar.gz \
+  && tar xzf search_api_solr-4.2.8.tar.gz \
   && mv search_api_solr /opt/solr/. \
   && /opt/solr/bin/solr create -c drupal8 -d "/opt/solr/search_api_solr/jump-start/solr7/config-set" -force \
   && /opt/solr/bin/solr stop -all

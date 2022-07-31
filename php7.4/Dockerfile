@@ -9,7 +9,7 @@
 # docker build . -t proboci/alpine:php7.4
 # docker push proboci/alpine:php7.4
 
-FROM alpine:3.15.4
+FROM alpine:3.15
 
 LABEL name="ProboCI PHP 7.4 Image"
 LABEL description="ProboCI's PHP 7.4 image based off Alpine Linux"
@@ -18,13 +18,15 @@ LABEL vendor="ProboCI, LLC."
 
 ENV TERM xterm
 
+ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/src/vendor/bin
+
 # Copy our Alpine compiled iconv library
 COPY files/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
 
 # Install all of our base packages for making the image work.
 RUN apk update && \
   apk add --no-cache \
-  openrc nodejs mysql mysql-client php7-apache2 postgresql-client postgresql openjdk8-jre wget bash chromium \
+  openrc nodejs mariadb mariadb-client php7-apache2 postgresql-client postgresql openjdk8-jre wget bash chromium \
   chromium-chromedriver php7 php7-bcmath php7-bz2 php7-curl php7-dba php7-gd php7-intl php7-ldap php7-mbstring php7-mysqli \
   php7-opcache php7-pdo_mysql php7-pdo_pgsql php7-soap php7-xml php7-zip php7-pecl-redis php7-pecl-memcached lsof \
   php7-pecl-imagick php7-pear git vim zip gzip bzip2 pv rsync varnish curl php7-cgi php7-common sudo php7-simplexml \
@@ -117,9 +119,9 @@ RUN mkdir -p /opt/solr && \
   && tar xzf search_api_solr-7.x-1.15.tar.gz \
   && mv search_api_solr /opt/solr/. \
   && /opt/solr/bin/solr create -c drupal7 -d "/opt/solr/search_api_solr/solr-conf/7.x" -force \
-  && wget https://ftp.drupal.org/files/projects/search_api_solr-4.2.7.tar.gz \
+  && wget https://ftp.drupal.org/files/projects/search_api_solr-4.2.8.tar.gz \
   && rm -rf /opt/solr/search_api_solr \
-  && tar xzf search_api_solr-4.2.7.tar.gz \
+  && tar xzf search_api_solr-4.2.8.tar.gz \
   && mv search_api_solr /opt/solr/. \
   && /opt/solr/bin/solr create -c drupal8 -d "/opt/solr/search_api_solr/jump-start/solr7/config-set" -force \
   && /opt/solr/bin/solr stop -all
