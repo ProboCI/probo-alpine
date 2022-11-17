@@ -21,7 +21,7 @@ ENV TERM xterm
 ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/src/vendor/bin
 
 # Copy our Alpine compiled iconv library
-COPY files/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
+# COPY files/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
 
 # Install all of our base packages for making the image work.
 RUN apk update && \
@@ -37,7 +37,7 @@ RUN apk update && \
 RUN ln -s /usr/bin/php7 /bin/php
 
 # Attempt to resolve our iconv problems
-ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
+# ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 # For compatibility with Ubuntu, create a symlink to chromedriver from the Ubuntu location.
 RUN ln -s /usr/bin/chromedriver /usr/local/bin/chromedriver

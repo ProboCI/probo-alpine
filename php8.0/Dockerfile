@@ -21,7 +21,7 @@ ENV TERM xterm
 ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/src/vendor/bin
 
 # Copy our Alpine compiled iconv library
-COPY files/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
+# COPY files/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
 
 # Install all of our base packages for making the image work.
 RUN apk update && \
@@ -31,13 +31,17 @@ RUN apk update && \
   php8-opcache php8-pdo_mysql php8-pdo_pgsql php8-soap php8-xml php8-zip php8-pecl-redis php8-pecl-memcached lsof \
   php8-pecl-imagick php8-pear git vim zip gzip bzip2 pv rsync varnish curl php8-cgi php8-common sudo php8-simplexml \
   php8-cli mlocate php8-phar php8-dom php8-tokenizer mariadb-openrc apache2-ctl npm redis memcached ncurses php8-ctype \
-  php8-xmlwriter patch xvfb-run xvfb apache2-proxy php8-iconv gnu-libiconv apache2-ssl php8-xmlreader
+  php8-xmlwriter patch xvfb-run xvfb apache2-proxy php8-iconv gnu-libiconv apache2-ssl php8-xmlreader clamav clamav-db
+
+# Run freshclam to get our clam database
+COPY files/clamd.conf /etc/clamav/clamd.conf
+RUN freshclam && clamd
 
 # By default, alpine puts PHP in as "php7" or "php8". We need to homogenize it.
 RUN ln -s /usr/bin/php8 /bin/php
 
 # Attempt to resolve our iconv problems
-ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
+# ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 # For compatibility with Ubuntu, create a symlink to chromedriver from the Ubuntu location.
 RUN ln -s /usr/bin/chromedriver /usr/local/bin/chromedriver

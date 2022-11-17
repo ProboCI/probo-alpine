@@ -21,7 +21,7 @@ ENV TERM xterm
 ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/src/vendor/bin
 
 # Copy our Alpine compiled iconv library
-COPY files/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
+# COPY files/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
 
 # Install all of our base packages for making the image work.
 RUN apk update && \
@@ -31,13 +31,17 @@ RUN apk update && \
   php81-opcache php81-pdo_mysql php81-pdo_pgsql php81-soap php81-xml php81-zip php81-pecl-redis php81-pecl-memcached lsof \
   php81-pecl-imagick php81-pear git vim zip gzip bzip2 pv rsync xvfb varnish curl php81-cgi php81-common sudo php81-simplexml \
   php81-cli mlocate php81-phar php81-dom php81-tokenizer mariadb-openrc apache2-ctl npm redis memcached ncurses php81-ctype \
-  php81-iconv apache2-proxy php81-gd gnu-libiconv apache2-ssl php81-xmlreader
+  php81-iconv apache2-proxy php81-gd gnu-libiconv apache2-ssl php81-xmlreader clamav clamav-db
+
+# Run freshclam to get our clam database
+COPY files/clamd.conf /etc/clamav/clamd.conf
+RUN  mkdir -p /run/clamav/ && freshclam && clamd
 
 # By default, alpine puts PHP in as "php7" or "php8". We need to homogenize it.
 RUN ln -s /usr/bin/php81 /bin/php
 
 # Attempt to resolve our iconv problems
-ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
+# ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 # Install composer and drush.
 RUN mkdir -p /usr/local/src/drush9
