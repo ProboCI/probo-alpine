@@ -141,3 +141,6 @@ RUN mkdir -p /var/www/html
 
 COPY files/valid-user.sh /bin/valid
 RUN chmod 755 /bin/versionizer /bin/valid
+
+RUN rm /usr/bin/vi
+RUN ln -s /usr/bin/vim /usr/bin/vi

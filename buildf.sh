@@ -1,10 +1,10 @@
 #!/bin/bash
 
 cd ./php7.4/
-./buildf.sh $1
+sh ./buildf.sh $1 $2
 
 cd ../php8.0/
-./buildf.sh $1
+sh ./buildf.sh $1 $2
 
 cd ../php8.1/
-./buildf.sh $1
+sh ./buildf.sh $1 $2
