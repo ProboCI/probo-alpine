@@ -35,7 +35,7 @@ RUN apk update && \
 
 # Run freshclam to get our clam database
 COPY files/clamd.conf /etc/clamav/clamd.conf
-RUN freshclam && clamd
+RUN mkdir -p /run/clamav/ && freshclam && clamd
 
 # By default, alpine puts PHP in as "php7" or "php8". We need to homogenize it.
 RUN ln -s /usr/bin/php8 /bin/php
