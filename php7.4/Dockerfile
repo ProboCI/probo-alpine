@@ -31,7 +31,8 @@ RUN apk update && \
   php7-opcache php7-pdo_mysql php7-pdo_pgsql php7-soap php7-xml php7-zip php7-pecl-redis php7-pecl-memcached lsof \
   php7-pecl-imagick php7-pear git vim zip gzip bzip2 pv rsync varnish curl php7-cgi php7-common sudo php7-simplexml \
   php7-cli mlocate php7-phar php7-dom php7-tokenizer mariadb-openrc apache2-ctl npm redis memcached ncurses php7-ctype \
-  php7-xmlwriter patch xvfb-run xvfb apache2-proxy php7-iconv gnu-libiconv apache2-ssl php7-xmlreader clamav clamav-db
+  php7-xmlwriter patch xvfb-run xvfb apache2-proxy php7-iconv gnu-libiconv apache2-ssl php7-xmlreader clamav clamav-db \
+  php7-pecl-mongodb
 
 # Run freshclam to get our clam database
 COPY files/clamd.conf /etc/clamav/clamd.conf

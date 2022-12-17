@@ -31,7 +31,8 @@ RUN apk update && \
   php8-opcache php8-pdo_mysql php8-pdo_pgsql php8-soap php8-xml php8-zip php8-pecl-redis php8-pecl-memcached lsof \
   php8-pecl-imagick php8-pear git vim zip gzip bzip2 pv rsync varnish curl php8-cgi php8-common sudo php8-simplexml \
   php8-cli mlocate php8-phar php8-dom php8-tokenizer mariadb-openrc apache2-ctl npm redis memcached ncurses php8-ctype \
-  php8-xmlwriter patch xvfb-run xvfb apache2-proxy php8-iconv gnu-libiconv apache2-ssl php8-xmlreader clamav clamav-db
+  php8-xmlwriter patch xvfb-run xvfb apache2-proxy php8-iconv gnu-libiconv apache2-ssl php8-xmlreader clamav clamav-db \
+  php8-pecl-mongodb
 
 # Run freshclam to get our clam database
 COPY files/clamd.conf /etc/clamav/clamd.conf
