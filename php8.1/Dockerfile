@@ -9,7 +9,7 @@
 # docker build . -t proboci/alpine:php8.1
 # docker push proboci/alpine:php8.1
 
-FROM alpine:3.16
+FROM alpine:3.17
 
 LABEL name="ProboCI PHP 8.1 Image"
 LABEL description="ProboCI's PHP 8.1 image based off Alpine Linux"
@@ -121,9 +121,9 @@ RUN mkdir -p /opt/solr && \
   && tar xzf search_api_solr-7.x-1.15.tar.gz \
   && mv search_api_solr /opt/solr/. \
   && /opt/solr/bin/solr create -c drupal7 -d "/opt/solr/search_api_solr/solr-conf/7.x" -force \
-  && wget https://ftp.drupal.org/files/projects/search_api_solr-4.2.8.tar.gz \
+  && wget https://ftp.drupal.org/files/projects/search_api_solr-4.2.10.tar.gz \
   && rm -rf /opt/solr/search_api_solr \
-  && tar xzf search_api_solr-4.2.8.tar.gz \
+  && tar xzf search_api_solr-4.2.10.tar.gz \
   && mv search_api_solr /opt/solr/. \
   && /opt/solr/bin/solr create -c drupal8 -d "/opt/solr/search_api_solr/jump-start/solr7/config-set" -force \
   && /opt/solr/bin/solr stop -all
