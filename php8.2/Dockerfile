@@ -9,7 +9,7 @@
 # docker build . -t proboci/alpine:php8.2
 # docker push proboci/alpine:php8.2
 
-FROM alpine:3.17
+FROM alpine:edge
 
 LABEL name="ProboCI PHP 8.2 Image"
 LABEL description="ProboCI's PHP 8.2 image based off Alpine Linux"
@@ -29,9 +29,12 @@ RUN apk update && \
   openrc nodejs mariadb mariadb-client php82-apache2 postgresql-client postgresql openjdk8-jre wget bash chromium \
   chromium-chromedriver php82 php82-bcmath php82-bz2 php82-curl php82-dba  php82-ldap php82-mbstring php82-mysqli \
   php82-opcache php82-pdo_mysql php82-pdo_pgsql php82-soap php82-xml php82-zip php82-pecl-redis php82-pecl-memcached lsof \
-  php82-pecl-imagick php82-pear git vim zip gzip bzip2 pv rsync xvfb varnish curl php82-cgi php82-common sudo php82-simplexml \
+  php82-pear git vim zip gzip bzip2 pv rsync xvfb varnish curl php82-cgi php82-common sudo php82-simplexml \
   php82-cli mlocate php82-phar php82-dom php82-tokenizer mariadb-openrc apache2-ctl npm redis memcached ncurses php82-ctype \
-  php82-iconv apache2-proxy php82-gd gnu-libiconv apache2-ssl php82-xmlreader clamav clamav-db php82-xmlwriter php82-pecl-mongodb
+  php82-iconv apache2-proxy php82-gd gnu-libiconv apache2-ssl php82-xmlreader clamav clamav-db php82-xmlwriter \
+  php82-pecl-mongodb
+#php82-pecl-imagick
+
 
 # Run freshclam to get our clam database
 COPY files/clamd.conf /etc/clamav/clamd.conf
