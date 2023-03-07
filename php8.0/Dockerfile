@@ -78,7 +78,7 @@ RUN npm install -g proboscis --unsafe
 
 # Install Terminus Pantheon command line tool, https://pantheon.io/docs/terminus.
 RUN mkdir ~/terminus && cd ~/terminus \
-  && curl -L https://github.com/pantheon-systems/terminus/releases/download/3.0.6/terminus.phar --output terminus \
+  && curl -L https://github.com/pantheon-systems/terminus/releases/download/3.1.4/terminus.phar --output terminus \
   && chmod +x terminus \
   && ln -s ~/terminus/terminus /bin/terminus
 

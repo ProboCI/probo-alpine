@@ -8,6 +8,9 @@
 # Build the proboci/alpine:php7.4
 # docker build . -t proboci/alpine:php7.4
 # docker push proboci/alpine:php7.4
+#
+# March 7, 2023 - No more non-upstream updates.
+#
 
 FROM alpine:3.15
 
