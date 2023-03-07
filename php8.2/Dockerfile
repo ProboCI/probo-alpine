@@ -3,16 +3,16 @@
 # These images are built using Dockerfile inheritance to build the images used for Probo.CI.
 #
 # Image: proboci/alpine
-# Tag: php8.1
+# Tag: php8.2
 # 
-# Build the proboci/alpine:php8.1
-# docker build . -t proboci/alpine:php8.1
-# docker push proboci/alpine:php8.1
+# Build the proboci/alpine:php8.2
+# docker build . -t proboci/alpine:php8.2
+# docker push proboci/alpine:php8.2
 
 FROM alpine:3.17
 
-LABEL name="ProboCI PHP 8.1 Image"
-LABEL description="ProboCI's PHP 8.1 image based off Alpine Linux"
+LABEL name="ProboCI PHP 8.2 Image"
+LABEL description="ProboCI's PHP 8.2 image based off Alpine Linux"
 LABEL author="Michael R. Bagnall <mbagnall@zivtech.com>"
 LABEL vendor="ProboCI, LLC."
 
@@ -26,19 +26,19 @@ COPY files/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
 # Install all of our base packages for making the image work.
 RUN apk update && \
   apk add --no-cache \
-  openrc nodejs mariadb mariadb-client php81-apache2 postgresql-client postgresql openjdk8-jre wget bash chromium \
-  chromium-chromedriver php81 php81-bcmath php81-bz2 php81-curl php81-dba  php81-ldap php81-mbstring php81-mysqli \
-  php81-opcache php81-pdo_mysql php81-pdo_pgsql php81-soap php81-xml php81-zip php81-pecl-redis php81-pecl-memcached lsof \
-  php81-pecl-imagick php81-pear git vim zip gzip bzip2 pv rsync xvfb varnish curl php81-cgi php81-common sudo php81-simplexml \
-  php81-cli mlocate php81-phar php81-dom php81-tokenizer mariadb-openrc apache2-ctl npm redis memcached ncurses php81-ctype \
-  php81-iconv apache2-proxy php81-gd gnu-libiconv apache2-ssl php81-xmlreader clamav clamav-db php81-xmlwriter php81-pecl-mongodb
+  openrc nodejs mariadb mariadb-client php82-apache2 postgresql-client postgresql openjdk8-jre wget bash chromium \
+  chromium-chromedriver php82 php82-bcmath php82-bz2 php82-curl php82-dba  php82-ldap php82-mbstring php82-mysqli \
+  php82-opcache php82-pdo_mysql php82-pdo_pgsql php82-soap php82-xml php82-zip php82-pecl-redis php82-pecl-memcached lsof \
+  php82-pecl-imagick php82-pear git vim zip gzip bzip2 pv rsync xvfb varnish curl php82-cgi php82-common sudo php82-simplexml \
+  php82-cli mlocate php82-phar php82-dom php82-tokenizer mariadb-openrc apache2-ctl npm redis memcached ncurses php82-ctype \
+  php82-iconv apache2-proxy php82-gd gnu-libiconv apache2-ssl php82-xmlreader clamav clamav-db php82-xmlwriter php82-pecl-mongodb
 
 # Run freshclam to get our clam database
 COPY files/clamd.conf /etc/clamav/clamd.conf
 RUN mkdir -p /run/clamav/ && freshclam && clamd
 
 # By default, alpine puts PHP in as "php7" or "php8". We need to homogenize it.
-RUN ln -s /usr/bin/php81 /bin/php
+RUN ln -s /usr/bin/php82 /bin/php
 
 # Attempt to resolve our iconv problems
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
