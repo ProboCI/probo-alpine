@@ -105,11 +105,13 @@ RUN cd /root && \
   chmod -R 755 /root/bee/bee.php && \
   cd
 
+COPY files/mysql /etc/init.d/mysql
 RUN addgroup mysql mysql && \
   chown -R mysql:mysql /var/lib/mysql && \
   mysql_install_db --user=mysql --ldata=/var/lib/mysql && \
   mkdir -p /run/mysqld && \
-  chown -R mysql:mysql /run/mysqld
+  chown -R mysql:mysql /run/mysqld && \
+  chmod 755 /etc/init.d/mysql
 
 # Setup Apache SOLR
 ENV SOLR_USER root
