@@ -21,7 +21,7 @@ LABEL vendor="ProboCI, LLC."
 
 ENV TERM xterm
 
-ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/src/vendor/bin
+ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/src/vendor/bin:/src/vendor/drush/drush
 
 # Copy our Alpine compiled iconv library
 COPY files/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
@@ -51,30 +51,36 @@ ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 RUN ln -s /usr/bin/chromedriver /usr/local/bin/chromedriver
 
 # Install composer and drush.
-RUN mkdir -p /usr/local/src/drush9
-RUN mkdir -p /usr/local/src/drush8
-RUN mkdir -p /usr/local/src/drush-launcher
 RUN apk add php7-cli && curl -sS https://getcomposer.org/installer | php -- \
   --install-dir=/usr/local/bin \
-  --filename=composer \
-  && composer \
-  --working-dir=/usr/local/src/drush9 \
-  global \
-  require \
-  drush/drush:9.* \
-  && composer \
-  --working-dir=/usr/local/src/drush8 \
-  global \
-  require \
-  drush/drush:8.* \
-  && mkdir /etc/drush \
-  && mkdir /etc/drush/conf.d
-COPY files/drush-environment.php /etc/drush/conf.d/environment.php
-COPY files/drushrc.php /etc/drush/drushrc.php
+  --filename=composer
 COPY files/versionizer.php /bin/versionizer
 COPY files/bashrc /root/.bashrc
-RUN wget -O /usr/local/src/drush-launcher/drush https://github.com/drush-ops/drush-launcher/releases/latest/download/drush.phar
-RUN chmod +x /usr/local/src/drush-launcher/drush
+
+# RUN mkdir -p /usr/local/src/drush9
+# RUN mkdir -p /usr/local/src/drush8
+# RUN mkdir -p /usr/local/src/drush-launcher
+# RUN apk add php7-cli && curl -sS https://getcomposer.org/installer | php -- \
+#   --install-dir=/usr/local/bin \
+#   --filename=composer \
+#   && composer \
+#   --working-dir=/usr/local/src/drush9 \
+#   global \
+#   require \
+#   drush/drush:9.* \
+#   && composer \
+#   --working-dir=/usr/local/src/drush8 \
+#   global \
+#   require \
+#   drush/drush:8.* \
+#   && mkdir /etc/drush \
+#   && mkdir /etc/drush/conf.d
+# COPY files/drush-environment.php /etc/drush/conf.d/environment.php
+# COPY files/drushrc.php /etc/drush/drushrc.php
+# COPY files/versionizer.php /bin/versionizer
+# COPY files/bashrc /root/.bashrc
+# RUN wget -O /usr/local/src/drush-launcher/drush https://github.com/drush-ops/drush-launcher/releases/latest/download/drush.phar
+# RUN chmod +x /usr/local/src/drush-launcher/drush
 
 # Install Proboscis
 RUN npm install -g proboscis --unsafe
@@ -130,9 +136,9 @@ RUN mkdir -p /opt/solr && \
   && tar xzf search_api_solr-7.x-1.15.tar.gz \
   && mv search_api_solr /opt/solr/. \
   && /opt/solr/bin/solr create -c drupal7 -d "/opt/solr/search_api_solr/solr-conf/7.x" -force \
-  && wget https://ftp.drupal.org/files/projects/search_api_solr-4.2.10.tar.gz \
+  && wget https://ftp.drupal.org/files/projects/search_api_solr-4.3.0.tar.gz \
   && rm -rf /opt/solr/search_api_solr \
-  && tar xzf search_api_solr-4.2.10.tar.gz \
+  && tar xzf search_api_solr-4.3.0.tar.gz \
   && mv search_api_solr /opt/solr/. \
   && /opt/solr/bin/solr create -c drupal8 -d "/opt/solr/search_api_solr/jump-start/solr7/config-set" -force \
   && /opt/solr/bin/solr stop -all
