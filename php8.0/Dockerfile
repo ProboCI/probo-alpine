@@ -154,5 +154,9 @@ RUN mkdir -p /var/www/html
 COPY files/valid-user.sh /bin/valid
 RUN chmod 755 /bin/versionizer /bin/valid
 
+# Fly in our Drush script for sanitizing the database which removes
+# a lot of revision, cache, watchdog, and search data.
+COPY files/database_sanitize.php /opt/database_sanitize.php
+
 RUN rm /usr/bin/vi
 RUN ln -s /usr/bin/vim /usr/bin/vi
