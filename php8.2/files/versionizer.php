@@ -21,7 +21,7 @@ $bee_version = `bee version`;
 print "\n\n";
 print "\e[1;33m------------------------------------------\n";
 print "Probo.CI - Software Versions Report:\n";
-print "Alpine Linux Distribution - v3.16\n";
+print "Alpine Linux Distribution - v3.18\n";
 print "------------------------------------------\e[0m\n";
 print $php_version . "\n";
 print "Apache: " . $apache_version . "\n";
