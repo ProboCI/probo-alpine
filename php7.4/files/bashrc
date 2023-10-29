@@ -1,5 +1,1 @@
 PS1="\e[1;35m[ProboCI > \w]\$ \e[0m"
-
-drush() { 
-  /usr/local/bin/drush -r /var/www/html $*
-}
