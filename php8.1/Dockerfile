@@ -51,31 +51,6 @@ RUN apk add php81-cli && curl -sS https://getcomposer.org/installer | php -- \
 COPY files/versionizer.php /bin/versionizer
 COPY files/bashrc /root/.bashrc
 
-# RUN mkdir -p /usr/local/src/drush9
-# RUN mkdir -p /usr/local/src/drush8
-# RUN mkdir -p /usr/local/src/drush-launcher
-# RUN apk add php8-cli && curl -sS https://getcomposer.org/installer | php -- \
-#   --install-dir=/usr/local/bin \
-#   --filename=composer \
-#   && composer \
-#   --working-dir=/usr/local/src/drush9 \
-#   global \
-#   require \
-#   drush/drush:9.* \
-#   && composer \
-#   --working-dir=/usr/local/src/drush8 \
-#   global \
-#   require \
-#   drush/drush:8.* \
-#   && mkdir /etc/drush \
-#   && mkdir /etc/drush/conf.d
-# COPY files/drush-environment.php /etc/drush/conf.d/environment.php
-# COPY files/drushrc.php /etc/drush/drushrc.php
-# COPY files/versionizer.php /bin/versionizer
-# COPY files/bashrc /root/.bashrc
-# RUN wget -O /usr/local/src/drush-launcher/drush https://github.com/drush-ops/drush-launcher/releases/latest/download/drush.phar
-# RUN chmod +x /usr/local/src/drush-launcher/drush
-
 # Install Proboscis
 RUN npm install -g proboscis --unsafe
 

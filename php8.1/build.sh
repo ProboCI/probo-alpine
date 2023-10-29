@@ -1,11 +1,12 @@
 #!/bin/bash
 
 echo "---------------------------------------------------------------"
-printf "Alpine - PHP 8.1 ProboCI Build: "
-docker build . -q -t proboci/alpine:php8.1 ${2}
+echo "Alpine - PHP 8.1 ProboCI Build: "
+echo "---------------------------------------------------------------"
+docker build . -t proboci/alpine:php8.1 ${2}
 if [[ ${1} = 'production' ]] || [[ ${1} = 'prod' ]]; then
-  printf "Pushing to DockerHub: "
-  docker push -q proboci/alpine:php8.1
+echo "---------------------------------------------------------------"
+  echo "Pushing to DockerHub: "
+  docker push proboci/alpine:php8.1
 fi
-
 echo "---------------------------------------------------------------"
