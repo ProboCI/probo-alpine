@@ -21,7 +21,7 @@ LABEL vendor="ProboCI, LLC."
 
 ENV TERM xterm
 
-ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/src/vendor/bin:/src/vendor/drush/drush
+ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/src/vendor/bin:/src/vendor/drush/drush:/src/docroot/vendor/drush/drush
 
 # Copy our Alpine compiled iconv library
 COPY files/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
