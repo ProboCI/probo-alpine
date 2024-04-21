@@ -11,3 +11,8 @@ cd ../php8.1/
 
 cd ../php8.2/
 ./build.sh $1 $2
+
+cd ../php8.3/
+./build.sh $1 $2
+
+cd ../

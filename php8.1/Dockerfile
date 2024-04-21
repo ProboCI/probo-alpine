@@ -9,7 +9,7 @@
 # docker build . -t proboci/alpine:php8.1
 # docker push proboci/alpine:php8.1
 
-FROM alpine:3.18
+FROM alpine:3.19
 
 LABEL name="ProboCI PHP 8.1 Image"
 LABEL description="ProboCI's PHP 8.1 image based off Alpine Linux"
@@ -26,17 +26,19 @@ COPY files/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
 # Install all of our base packages for making the image work.
 RUN apk update && \
   apk add --no-cache \
-  openrc nodejs mariadb mariadb-client php81-apache2 postgresql-client postgresql openjdk8-jre wget bash chromium \
-  chromium-chromedriver php81 php81-bcmath php81-bz2 php81-curl php81-dba  php81-ldap php81-mbstring php81-mysqli \
-  php81-opcache php81-pdo_mysql php81-pdo_pgsql php81-soap php81-xml php81-zip php81-pecl-redis php81-pecl-memcached lsof \
-  php81-pecl-imagick php81-pear git vim zip gzip bzip2 pv rsync xvfb varnish curl php81-cgi php81-common sudo php81-simplexml \
-  php81-cli mlocate php81-phar php81-dom php81-tokenizer mariadb-openrc apache2-ctl npm redis memcached ncurses php81-ctype \
-  php81-iconv apache2-proxy php81-gd gnu-libiconv apache2-ssl php81-xmlreader clamav clamav-db php81-xmlwriter php81-pecl-mongodb \
-  php81-sqlite3 php81-pdo_sqlite sqlite nano
+  openrc nodejs mariadb mariadb-client php81-apache2 wget bash \
+  php81 php81-bcmath php81-bz2 php81-curl php81-dba php81-ldap php81-mbstring php81-mysqli \
+  php81-opcache php81-pdo_mysql php81-pdo_pgsql php81-soap php81-xml php81-zip php81-pecl-redis \
+  php81-pecl-memcached openjdk8-jre php81-pear git vim zip gzip bzip2 pv rsync curl php81-cgi \
+  php81-common sudo php81-simplexml php81-cli mlocate php81-phar php81-dom php81-tokenizer \
+  mariadb-openrc apache2-ctl npm redis memcached ncurses php81-ctype php81-iconv apache2-proxy \
+  php81-gd gnu-libiconv apache2-ssl php81-xmlreader php81-xmlwriter \
+  php81-pecl-mongodb php81-pecl-imagick nano
 
 # Run freshclam to get our clam database
-COPY files/clamd.conf /etc/clamav/clamd.conf
-RUN mkdir -p /run/clamav/ && freshclam && clamd
+# RUN apk add clamav clamav-db
+# COPY files/clamd.conf /etc/clamav/clamd.conf
+# RUN mkdir -p /run/clamav/ && freshclam && clamd
 
 # By default, alpine puts PHP in as "php7" or "php8". We need to homogenize it.
 RUN ln -s /usr/bin/php81 /bin/php
@@ -56,7 +58,7 @@ RUN npm install -g proboscis --unsafe
 
 # Install Terminus Pantheon command line tool, https://pantheon.io/docs/terminus.
 RUN mkdir ~/terminus && cd ~/terminus \
-  && curl -L https://github.com/pantheon-systems/terminus/releases/download/3.2.2/terminus.phar --output terminus \
+  && curl -L https://github.com/pantheon-systems/terminus/releases/download/3.3.5/terminus.phar --output terminus \
   && chmod +x terminus \
   && ln -s ~/terminus/terminus /bin/terminus
 
@@ -82,8 +84,8 @@ RUN cd /root && \
 
 COPY files/mysql /etc/init.d/mysql
 RUN addgroup mysql mysql && \
-  chown -R mysql:mysql /var/lib/mysql && \
   mysql_install_db --user=mysql --ldata=/var/lib/mysql && \
+  chown -R mysql:mysql /var/lib/mysql && \
   mkdir -p /run/mysqld && \
   chown -R mysql:mysql /run/mysqld && \
   chmod 755 /etc/init.d/mysql
@@ -91,8 +93,9 @@ RUN addgroup mysql mysql && \
 # Setup Apache SOLR
 ENV SOLR_USER root
 ENV SOLR_UID 8983
-ENV SOLR_VERSION 7.7.3
-RUN mkdir -p /opt/solr && \
+ENV SOLR_VERSION 8.11.3
+RUN apk add procps lsof && \
+  mkdir -p /opt/solr && \
   wget -nv --output-document=/opt/solr.tgz https://proofroom.s3.amazonaws.com/solr-$SOLR_VERSION.tgz && \
   cd /opt && \
   tar xzf solr.tgz && \
@@ -101,15 +104,11 @@ RUN mkdir -p /opt/solr && \
   mkdir -p /opt/solr/server/solr/lib && \
   chown -R $SOLR_USER:$SOLR_USER /opt/solr \
   && /opt/solr/bin/solr -force \
-  && wget https://ftp.drupal.org/files/projects/search_api_solr-7.x-1.15.tar.gz \
-  && tar xzf search_api_solr-7.x-1.15.tar.gz \
-  && mv search_api_solr /opt/solr/. \
-  && /opt/solr/bin/solr create -c drupal7 -d "/opt/solr/search_api_solr/solr-conf/7.x" -force \
-  && wget https://ftp.drupal.org/files/projects/search_api_solr-4.3.0.tar.gz \
+  && wget https://ftp.drupal.org/files/projects/search_api_solr-4.3.3.tar.gz \
   && rm -rf /opt/solr/search_api_solr \
-  && tar xzf search_api_solr-4.3.0.tar.gz \
+  && tar xzf search_api_solr-4.3.3.tar.gz \
   && mv search_api_solr /opt/solr/. \
-  && /opt/solr/bin/solr create -c drupal8 -d "/opt/solr/search_api_solr/jump-start/solr7/config-set" -force \
+  && /opt/solr/bin/solr create -c drupal -d "/opt/solr/search_api_solr/jump-start/solr8/config-set" -force \
   && /opt/solr/bin/solr stop -all
 
 COPY files/mysql-setup.sql /mysql-setup.sql
