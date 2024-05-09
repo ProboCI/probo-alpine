@@ -33,7 +33,7 @@ RUN apk update && \
   php8-common sudo php8-simplexml php8-cli mlocate php8-phar php8-dom php8-tokenizer \
   mariadb-openrc apache2-ctl npm redis memcached ncurses php8-ctype php8-iconv apache2-proxy \
   php8-gd gnu-libiconv apache2-ssl php8-xmlreader php8-xmlwriter \
-  php8-pecl-mongodb php8-pecl-imagick nano
+  php8-pecl-mongodb php8-pecl-imagick nano php8-pdo_sqlite sqlite
 
 # Run freshclam to get our clam database
 # RUN apk add clamav clamav-db

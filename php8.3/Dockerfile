@@ -33,7 +33,7 @@ RUN apk update && \
   php83-common sudo php83-simplexml php83-cli mlocate php83-phar php83-dom php83-tokenizer \
   mariadb-openrc apache2-ctl npm redis memcached ncurses php83-ctype php83-iconv apache2-proxy \
   php83-gd gnu-libiconv apache2-ssl php83-xmlreader php83-xmlwriter \
-  php83-pecl-mongodb php83-pecl-imagick nano
+  php83-pecl-mongodb php83-pecl-imagick nano php83-pdo_sqlite sqlite
 
 # Run freshclam to get our clam database
 # RUN apk add clamav clamav-db
