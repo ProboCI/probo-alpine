@@ -35,7 +35,7 @@ RUN apk update && \
   php7-pecl-memcached openjdk8-jre php7-pear git vim zip gzip bzip2 pv rsync curl php7-cgi \
   php7-common sudo php7-simplexml php7-cli mlocate php7-phar php7-dom php7-tokenizer \
   mariadb-openrc apache2-ctl npm redis memcached ncurses php7-ctype php7-iconv apache2-proxy \
-  php7-gd gnu-libiconv apache2-ssl php7-xmlreader php7-xmlwriter \
+  php7-gd gnu-libiconv apache2-ssl php7-xmlreader php7-xmlwriter imagemagick-pdf \
   php7-pecl-mongodb php7-pecl-imagick nano php7-pdo_sqlite sqlite
 
 # Run freshclam to get our clam database
