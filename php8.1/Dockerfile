@@ -91,7 +91,7 @@ RUN addgroup mysql mysql && \
 # Setup Apache SOLR
 ENV SOLR_USER root
 ENV SOLR_UID 8983
-ENV SOLR_VERSION 7.7.3
+ENV SOLR_VERSION 9.6.1
 RUN mkdir -p /opt/solr && \
   wget -nv --output-document=/opt/solr.tgz https://proofroom.s3.amazonaws.com/solr-$SOLR_VERSION.tgz && \
   cd /opt && \
@@ -101,15 +101,11 @@ RUN mkdir -p /opt/solr && \
   mkdir -p /opt/solr/server/solr/lib && \
   chown -R $SOLR_USER:$SOLR_USER /opt/solr \
   && /opt/solr/bin/solr -force \
-  && wget https://ftp.drupal.org/files/projects/search_api_solr-7.x-1.15.tar.gz \
-  && tar xzf search_api_solr-7.x-1.15.tar.gz \
-  && mv search_api_solr /opt/solr/. \
-  && /opt/solr/bin/solr create -c drupal7 -d "/opt/solr/search_api_solr/solr-conf/7.x" -force \
-  && wget https://ftp.drupal.org/files/projects/search_api_solr-4.3.0.tar.gz \
+  && wget https://ftp.drupal.org/files/projects/search_api_solr-4.3.3.tar.gz \
   && rm -rf /opt/solr/search_api_solr \
-  && tar xzf search_api_solr-4.3.0.tar.gz \
+  && tar xzf search_api_solr-4.3.3.tar.gz \
   && mv search_api_solr /opt/solr/. \
-  && /opt/solr/bin/solr create -c drupal8 -d "/opt/solr/search_api_solr/jump-start/solr7/config-set" -force \
+  && /opt/solr/bin/solr create -c drupal -d "/opt/solr/search_api_solr/jump-start/solr9/config-set" -force \
   && /opt/solr/bin/solr stop -all
 
 COPY files/mysql-setup.sql /mysql-setup.sql
