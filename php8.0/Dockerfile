@@ -26,17 +26,19 @@ COPY files/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
 # Install all of our base packages for making the image work.
 RUN apk update && \
   apk add --no-cache \
-  openrc nodejs mariadb mariadb-client php8-apache2 postgresql-client postgresql openjdk8-jre wget bash chromium \
-  chromium-chromedriver php8 php8-bcmath php8-bz2 php8-curl php8-dba php8-gd php8-intl php8-ldap php8-mbstring php8-mysqli \
-  php8-opcache php8-pdo_mysql php8-pdo_pgsql php8-soap php8-xml php8-zip php8-pecl-redis php8-pecl-memcached lsof \
-  php8-pecl-imagick php8-pear git vim zip gzip bzip2 pv rsync varnish curl php8-cgi php8-common sudo php8-simplexml \
-  php8-cli mlocate php8-phar php8-dom php8-tokenizer mariadb-openrc apache2-ctl npm redis memcached ncurses php8-ctype \
-  php8-xmlwriter patch xvfb-run xvfb apache2-proxy php8-iconv gnu-libiconv apache2-ssl php8-xmlreader clamav clamav-db \
-  php8-pecl-mongodb php8-pdo_sqlite php8-sqlite3 sqlite nano
+  openrc nodejs mariadb mariadb-client php8-apache2 wget bash \
+  php8 php8-bcmath php8-bz2 php8-curl php8-dba php8-ldap php8-mbstring php8-mysqli \
+  php8-opcache php8-pdo_mysql php8-pdo_pgsql php8-soap php8-xml php8-zip php8-pecl-redis \
+  php8-pecl-memcached openjdk8-jre php8-pear git vim zip gzip bzip2 pv rsync curl php8-cgi \
+  php8-common sudo php8-simplexml php8-cli mlocate php8-phar php8-dom php8-tokenizer \
+  mariadb-openrc apache2-ctl npm redis memcached ncurses php8-ctype php8-iconv apache2-proxy \
+  php8-gd gnu-libiconv apache2-ssl php8-xmlreader php8-xmlwriter \
+  php8-pecl-mongodb php8-pecl-imagick nano php8-pdo_sqlite sqlite
 
 # Run freshclam to get our clam database
-COPY files/clamd.conf /etc/clamav/clamd.conf
-RUN mkdir -p /run/clamav/ && freshclam && clamd
+# RUN apk add clamav clamav-db
+# COPY files/clamd.conf /etc/clamav/clamd.conf
+# RUN mkdir -p /run/clamav/ && freshclam && clamd
 
 # By default, alpine puts PHP in as "php7" or "php8". We need to homogenize it.
 RUN ln -s /usr/bin/php8 /bin/php
@@ -45,7 +47,7 @@ RUN ln -s /usr/bin/php8 /bin/php
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 # For compatibility with Ubuntu, create a symlink to chromedriver from the Ubuntu location.
-RUN ln -s /usr/bin/chromedriver /usr/local/bin/chromedriver
+# RUN ln -s /usr/bin/chromedriver /usr/local/bin/chromedriver
 
 # Install composer and drush.
 RUN apk add php8-cli && curl -sS https://getcomposer.org/installer | php -- \
@@ -59,7 +61,7 @@ RUN npm install -g proboscis --unsafe
 
 # Install Terminus Pantheon command line tool, https://pantheon.io/docs/terminus.
 RUN mkdir ~/terminus && cd ~/terminus \
-  && curl -L https://github.com/pantheon-systems/terminus/releases/download/3.2.2/terminus.phar --output terminus \
+  && curl -L https://github.com/pantheon-systems/terminus/releases/download/3.3.5/terminus.phar --output terminus \
   && chmod +x terminus \
   && ln -s ~/terminus/terminus /bin/terminus
 
@@ -104,15 +106,15 @@ RUN mkdir -p /opt/solr && \
   mkdir -p /opt/solr/server/solr/lib && \
   chown -R $SOLR_USER:$SOLR_USER /opt/solr \
   && /opt/solr/bin/solr -force \
-  && wget https://ftp.drupal.org/files/projects/search_api_solr-7.x-1.15.tar.gz \
-  && tar xzf search_api_solr-7.x-1.15.tar.gz \
+  && wget https://ftp.drupal.org/files/projects/search_api_solr-7.x-1.16.tar.gz \
+  && tar xzf search_api_solr-7.x-1.16.tar.gz \
   && mv search_api_solr /opt/solr/. \
   && /opt/solr/bin/solr create -c drupal7 -d "/opt/solr/search_api_solr/solr-conf/7.x" -force \
   && wget https://ftp.drupal.org/files/projects/search_api_solr-4.3.0.tar.gz \
   && rm -rf /opt/solr/search_api_solr \
   && tar xzf search_api_solr-4.3.0.tar.gz \
   && mv search_api_solr /opt/solr/. \
-  && /opt/solr/bin/solr create -c drupal8 -d "/opt/solr/search_api_solr/jump-start/solr7/config-set" -force \
+  && /opt/solr/bin/solr create -c drupal -d "/opt/solr/search_api_solr/jump-start/solr7/config-set" -force \
   && /opt/solr/bin/solr stop -all
 
 COPY files/mysql-setup.sql /mysql-setup.sql

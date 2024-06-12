@@ -3,16 +3,16 @@
 # These images are built using Dockerfile inheritance to build the images used for Probo.CI.
 #
 # Image: proboci/alpine
-# Tag: php8.1
+# Tag: php8.3
 # 
-# Build the proboci/alpine:php8.1
-# docker build . -t proboci/alpine:php8.1
-# docker push proboci/alpine:php8.1
+# Build the proboci/alpine:php8.3
+# docker build . -t proboci/alpine:php8.3
+# docker push proboci/alpine:php8.3
 
 FROM alpine:3.19
 
-LABEL name="ProboCI PHP 8.1 Image"
-LABEL description="ProboCI's PHP 8.1 image based off Alpine Linux"
+LABEL name="ProboCI PHP 8.3 Image"
+LABEL description="ProboCI's PHP 8.3 image based off Alpine Linux"
 LABEL author="Michael R. Bagnall <mbagnall@zivtech.com>"
 LABEL vendor="ProboCI, LLC."
 
@@ -26,14 +26,14 @@ COPY files/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
 # Install all of our base packages for making the image work.
 RUN apk update && \
   apk add --no-cache \
-  openrc nodejs mariadb mariadb-client php81-apache2 wget bash \
-  php81 php81-bcmath php81-bz2 php81-curl php81-dba php81-ldap php81-mbstring php81-mysqli \
-  php81-opcache php81-pdo_mysql php81-pdo_pgsql php81-soap php81-xml php81-zip php81-pecl-redis \
-  php81-pecl-memcached openjdk8-jre php81-pear git vim zip gzip bzip2 pv rsync curl php81-cgi \
-  php81-common sudo php81-simplexml php81-cli mlocate php81-phar php81-dom php81-tokenizer \
-  mariadb-openrc apache2-ctl npm redis memcached ncurses php81-ctype php81-iconv apache2-proxy \
-  php81-gd gnu-libiconv apache2-ssl php81-xmlreader php81-xmlwriter imagemagick-pdf \
-  php81-pecl-mongodb php81-pecl-imagick nano php81-pdo_sqlite sqlite
+  openrc nodejs mariadb mariadb-client php83-apache2 wget bash \
+  php83 php83-bcmath php83-bz2 php83-curl php83-dba php83-ldap php83-mbstring php83-mysqli \
+  php83-opcache php83-pdo_mysql php83-pdo_pgsql php83-soap php83-xml php83-zip php83-pecl-redis \
+  php83-pecl-memcached openjdk8-jre php83-pear git vim zip gzip bzip2 pv rsync curl php83-cgi \
+  php83-common sudo php83-simplexml php83-cli mlocate php83-phar php83-dom php83-tokenizer \
+  mariadb-openrc apache2-ctl npm redis memcached ncurses php83-ctype php83-iconv apache2-proxy \
+  php83-gd gnu-libiconv apache2-ssl php83-xmlreader php83-xmlwriter imagemagick-pdf \
+  php83-pecl-mongodb php83-pecl-imagick nano php83-pdo_sqlite sqlite
 
 # Run freshclam to get our clam database
 # RUN apk add clamav clamav-db
@@ -41,13 +41,13 @@ RUN apk update && \
 # RUN mkdir -p /run/clamav/ && freshclam && clamd
 
 # By default, alpine puts PHP in as "php7" or "php8". We need to homogenize it.
-RUN ln -s /usr/bin/php81 /bin/php
+RUN ln -s /usr/bin/php83 /bin/php
 
 # Attempt to resolve our iconv problems
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 # Install composer and drush.
-RUN apk add php81-cli && curl -sS https://getcomposer.org/installer | php -- \
+RUN apk add php83-cli && curl -sS https://getcomposer.org/installer | php -- \
   --install-dir=/usr/local/bin \
   --filename=composer
 COPY files/versionizer.php /bin/versionizer
@@ -83,7 +83,7 @@ RUN cd /root && \
   cd
 
 COPY files/mysql /etc/init.d/mysql
-RUN addgroup mysql mysql && \
+RUN addgroup mysql mysql && \ 
   mysql_install_db --user=mysql --ldata=/var/lib/mysql && \
   chown -R mysql:mysql /var/lib/mysql && \
   mkdir -p /run/mysqld && \
@@ -93,8 +93,9 @@ RUN addgroup mysql mysql && \
 # Setup Apache SOLR
 ENV SOLR_USER root
 ENV SOLR_UID 8983
-ENV SOLR_VERSION 9.6.1
-RUN mkdir -p /opt/solr && \
+ENV SOLR_VERSION 8.11.3
+RUN apk add procps lsof && \
+  mkdir -p /opt/solr && \
   wget -nv --output-document=/opt/solr.tgz https://proofroom.s3.amazonaws.com/solr-$SOLR_VERSION.tgz && \
   cd /opt && \
   tar xzf solr.tgz && \
@@ -107,7 +108,7 @@ RUN mkdir -p /opt/solr && \
   && rm -rf /opt/solr/search_api_solr \
   && tar xzf search_api_solr-4.3.3.tar.gz \
   && mv search_api_solr /opt/solr/. \
-  && /opt/solr/bin/solr create -c drupal -d "/opt/solr/search_api_solr/jump-start/solr9/config-set" -force \
+  && /opt/solr/bin/solr create -c drupal -d "/opt/solr/search_api_solr/jump-start/solr8/config-set" -force \
   && /opt/solr/bin/solr stop -all
 
 COPY files/mysql-setup.sql /mysql-setup.sql
@@ -117,7 +118,6 @@ COPY files/probo-mysql.cnf /etc/my.cnf.d/probo-mysql.cnf
 COPY files/apache-default-host.conf /etc/apache2/conf.d/apache-default-host.conf
 COPY files/ssl_environment_variable.conf /etc/apache2/conf.d/ssl_environment_variable.conf
 COPY files/httpd.conf /etc/apache2/httpd.conf
-#COPY files/apache-default-varnish-host.conf /etc/apache2/sites-available/000-default-varnish.conf
 COPY files/listen_8080.conf /etc/apache2/conf.d/listen_8080.conf
 RUN mkdir -p /var/www/html
 

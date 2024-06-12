@@ -29,17 +29,19 @@ COPY files/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
 # Install all of our base packages for making the image work.
 RUN apk update && \
   apk add --no-cache \
-  openrc nodejs mariadb mariadb-client php7-apache2 postgresql-client postgresql openjdk8-jre wget bash chromium \
-  chromium-chromedriver php7 php7-bcmath php7-bz2 php7-curl php7-dba php7-gd php7-intl php7-ldap php7-mbstring php7-mysqli \
-  php7-opcache php7-pdo_mysql php7-pdo_pgsql php7-soap php7-xml php7-zip php7-pecl-redis php7-pecl-memcached lsof \
-  php7-pecl-imagick php7-pear git vim zip gzip bzip2 pv rsync varnish curl php7-cgi php7-common sudo php7-simplexml \
-  php7-cli mlocate php7-phar php7-dom php7-tokenizer mariadb-openrc apache2-ctl npm redis memcached ncurses php7-ctype \
-  php7-xmlwriter patch xvfb-run xvfb apache2-proxy php7-iconv gnu-libiconv apache2-ssl php7-xmlreader clamav clamav-db \
-  php7-pecl-mongodb php7-pdo_sqlite php7-sqlite3 sqlite nano
+  openrc nodejs mariadb mariadb-client php7-apache2 wget bash \
+  php7 php7-bcmath php7-bz2 php7-curl php7-dba php7-ldap php7-mbstring php7-mysqli \
+  php7-opcache php7-pdo_mysql php7-pdo_pgsql php7-soap php7-xml php7-zip php7-pecl-redis \
+  php7-pecl-memcached openjdk8-jre php7-pear git vim zip gzip bzip2 pv rsync curl php7-cgi \
+  php7-common sudo php7-simplexml php7-cli mlocate php7-phar php7-dom php7-tokenizer \
+  mariadb-openrc apache2-ctl npm redis memcached ncurses php7-ctype php7-iconv apache2-proxy \
+  php7-gd gnu-libiconv apache2-ssl php7-xmlreader php7-xmlwriter \
+  php7-pecl-mongodb php7-pecl-imagick nano php7-pdo_sqlite sqlite
 
 # Run freshclam to get our clam database
-COPY files/clamd.conf /etc/clamav/clamd.conf
-RUN mkdir -p /run/clamav/ && freshclam && clamd
+# RUN apk add clamav clamav-db
+# COPY files/clamd.conf /etc/clamav/clamd.conf
+# RUN mkdir -p /run/clamav/ && freshclam && clamd
 
 # By default, alpine puts PHP in as "php7" or "php7". We need to homogenize it.
 RUN ln -s /usr/bin/php7 /bin/php
@@ -48,7 +50,7 @@ RUN ln -s /usr/bin/php7 /bin/php
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 # For compatibility with Ubuntu, create a symlink to chromedriver from the Ubuntu location.
-RUN ln -s /usr/bin/chromedriver /usr/local/bin/chromedriver
+# RUN ln -s /usr/bin/chromedriver /usr/local/bin/chromedriver
 
 # Install composer and drush.
 RUN apk add php7-cli && curl -sS https://getcomposer.org/installer | php -- \
@@ -62,7 +64,7 @@ RUN npm install -g proboscis --unsafe
 
 # Install Terminus Pantheon command line tool, https://pantheon.io/docs/terminus.
 RUN mkdir ~/terminus && cd ~/terminus \
-  && curl -L https://github.com/pantheon-systems/terminus/releases/download/3.0.6/terminus.phar --output terminus \
+  && curl -L https://github.com/pantheon-systems/terminus/releases/download/3.3.5/terminus.phar --output terminus \
   && chmod +x terminus \
   && ln -s ~/terminus/terminus /bin/terminus
 
@@ -107,15 +109,15 @@ RUN mkdir -p /opt/solr && \
   mkdir -p /opt/solr/server/solr/lib && \
   chown -R $SOLR_USER:$SOLR_USER /opt/solr \
   && /opt/solr/bin/solr -force \
-  && wget https://ftp.drupal.org/files/projects/search_api_solr-7.x-1.15.tar.gz \
-  && tar xzf search_api_solr-7.x-1.15.tar.gz \
+  && wget https://ftp.drupal.org/files/projects/search_api_solr-7.x-1.16.tar.gz \
+  && tar xzf search_api_solr-7.x-1.16.tar.gz \
   && mv search_api_solr /opt/solr/. \
   && /opt/solr/bin/solr create -c drupal7 -d "/opt/solr/search_api_solr/solr-conf/7.x" -force \
   && wget https://ftp.drupal.org/files/projects/search_api_solr-4.3.0.tar.gz \
   && rm -rf /opt/solr/search_api_solr \
   && tar xzf search_api_solr-4.3.0.tar.gz \
   && mv search_api_solr /opt/solr/. \
-  && /opt/solr/bin/solr create -c drupal8 -d "/opt/solr/search_api_solr/jump-start/solr7/config-set" -force \
+  && /opt/solr/bin/solr create -c drupal -d "/opt/solr/search_api_solr/jump-start/solr7/config-set" -force \
   && /opt/solr/bin/solr stop -all
 
 COPY files/mysql-setup.sql /mysql-setup.sql
