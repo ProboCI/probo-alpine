@@ -29,11 +29,11 @@ RUN apk update && \
   openrc nodejs mariadb mariadb-client php8-apache2 wget bash \
   php8 php8-bcmath php8-bz2 php8-curl php8-dba php8-ldap php8-mbstring php8-mysqli \
   php8-opcache php8-pdo_mysql php8-pdo_pgsql php8-soap php8-xml php8-zip php8-pecl-redis \
-  php8-pecl-memcached openjdk8-jre php8-pear git vim zip gzip bzip2 pv rsync curl php8-cgi \
+  php8-pecl-memcached openjdk11-jre php8-pear git vim zip gzip bzip2 pv rsync curl php8-cgi \
   php8-common sudo php8-simplexml php8-cli mlocate php8-phar php8-dom php8-tokenizer \
   mariadb-openrc apache2-ctl npm redis memcached ncurses php8-ctype php8-iconv apache2-proxy \
   php8-gd gnu-libiconv apache2-ssl php8-xmlreader php8-xmlwriter \
-  php8-pecl-mongodb php8-pecl-imagick nano php8-pdo_sqlite sqlite
+  php8-pecl-mongodb php8-pecl-imagick nano php8-pdo_sqlite sqlite procps lsof
 
 # Run freshclam to get our clam database
 # RUN apk add clamav clamav-db

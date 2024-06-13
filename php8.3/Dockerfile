@@ -29,11 +29,11 @@ RUN apk update && \
   openrc nodejs mariadb mariadb-client php83-apache2 wget bash \
   php83 php83-bcmath php83-bz2 php83-curl php83-dba php83-ldap php83-mbstring php83-mysqli \
   php83-opcache php83-pdo_mysql php83-pdo_pgsql php83-soap php83-xml php83-zip php83-pecl-redis \
-  php83-pecl-memcached openjdk8-jre php83-pear git vim zip gzip bzip2 pv rsync curl php83-cgi \
+  php83-pecl-memcached openjdk11-jre php83-pear git vim zip gzip bzip2 pv rsync curl php83-cgi \
   php83-common sudo php83-simplexml php83-cli mlocate php83-phar php83-dom php83-tokenizer \
   mariadb-openrc apache2-ctl npm redis memcached ncurses php83-ctype php83-iconv apache2-proxy \
   php83-gd gnu-libiconv apache2-ssl php83-xmlreader php83-xmlwriter imagemagick-pdf \
-  php83-pecl-mongodb php83-pecl-imagick nano php83-pdo_sqlite sqlite
+  php83-pecl-mongodb php83-pecl-imagick nano php83-pdo_sqlite sqlite lsof procps
 
 # Run freshclam to get our clam database
 # RUN apk add clamav clamav-db
@@ -93,9 +93,8 @@ RUN addgroup mysql mysql && \
 # Setup Apache SOLR
 ENV SOLR_USER root
 ENV SOLR_UID 8983
-ENV SOLR_VERSION 8.11.3
-RUN apk add procps lsof && \
-  mkdir -p /opt/solr && \
+ENV SOLR_VERSION 9.6.1
+RUN mkdir -p /opt/solr && \
   wget -nv --output-document=/opt/solr.tgz https://proofroom.s3.amazonaws.com/solr-$SOLR_VERSION.tgz && \
   cd /opt && \
   tar xzf solr.tgz && \
@@ -108,7 +107,7 @@ RUN apk add procps lsof && \
   && rm -rf /opt/solr/search_api_solr \
   && tar xzf search_api_solr-4.3.3.tar.gz \
   && mv search_api_solr /opt/solr/. \
-  && /opt/solr/bin/solr create -c drupal -d "/opt/solr/search_api_solr/jump-start/solr8/config-set" -force \
+  && /opt/solr/bin/solr create -c drupal -d "/opt/solr/search_api_solr/jump-start/solr9/config-set" -force \
   && /opt/solr/bin/solr stop -all
 
 COPY files/mysql-setup.sql /mysql-setup.sql
