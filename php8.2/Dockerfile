@@ -29,18 +29,17 @@ RUN apk update && \
   openrc nodejs mariadb mariadb-client php82-apache2 wget bash \
   php82 php82-bcmath php82-bz2 php82-curl php82-dba php82-ldap php82-mbstring php82-mysqli \
   php82-opcache php82-pdo_mysql php82-pdo_pgsql php82-soap php82-xml php82-zip php82-pecl-redis \
-  php82-pecl-memcached openjdk8-jre php82-pear git vim zip gzip bzip2 pv rsync curl php82-cgi \
+  php82-pecl-memcached openjdk11-jre php82-pear git vim zip gzip bzip2 pv rsync curl php82-cgi \
   php82-common sudo php82-simplexml php82-cli mlocate php82-phar php82-dom php82-tokenizer \
   mariadb-openrc apache2-ctl npm redis memcached ncurses php82-ctype php82-iconv apache2-proxy \
   php82-gd gnu-libiconv apache2-ssl php82-xmlreader php82-xmlwriter imagemagick-pdf \
-  php82-pecl-mongodb php82-pecl-imagick nano php82-pdo_sqlite sqlite
+  php82-pecl-mongodb php82-pecl-imagick nano php82-pdo_sqlite sqlite procps lsof
 
 # Run freshclam to get our clam database
 # RUN apk add clamav clamav-db
 # COPY files/clamd.conf /etc/clamav/clamd.conf
 # RUN mkdir -p /run/clamav/ && freshclam && clamd
 
-# By default, alpine puts PHP in as "php7" or "php8". We need to homogenize it.
 RUN ln -s /usr/bin/php82 /bin/php
 
 # Attempt to resolve our iconv problems
@@ -55,6 +54,9 @@ COPY files/bashrc /root/.bashrc
 
 # Install Proboscis
 RUN npm install -g proboscis --unsafe
+
+# Install gulp
+RUN npm install -g gulp
 
 # Install Terminus Pantheon command line tool, https://pantheon.io/docs/terminus.
 RUN mkdir ~/terminus && cd ~/terminus \
