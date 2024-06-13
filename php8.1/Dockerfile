@@ -56,6 +56,9 @@ COPY files/bashrc /root/.bashrc
 # Install Proboscis
 RUN npm install -g proboscis --unsafe
 
+# Install gulp
+RUN npm install -g gulp
+
 # Install Terminus Pantheon command line tool, https://pantheon.io/docs/terminus.
 RUN mkdir ~/terminus && cd ~/terminus \
   && curl -L https://github.com/pantheon-systems/terminus/releases/download/3.3.5/terminus.phar --output terminus \
