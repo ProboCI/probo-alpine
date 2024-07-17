@@ -93,9 +93,9 @@ RUN addgroup mysql mysql && \
   chmod 755 /etc/init.d/mysql
 
 # Setup Apache SOLR
-ENV SOLR_USER root
-ENV SOLR_UID 8983
-ENV SOLR_VERSION 9.6.1
+ENV SOLR_USER=root
+ENV SOLR_UID=8983
+ENV SOLR_VERSION=9.6.1
 RUN mkdir -p /opt/solr && \
   wget -nv --output-document=/opt/solr.tgz https://proofroom.s3.amazonaws.com/solr-$SOLR_VERSION.tgz && \
   cd /opt && \

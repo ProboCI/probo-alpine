@@ -16,9 +16,9 @@ LABEL description="ProboCI's PHP 8.3 image based off Alpine Linux"
 LABEL author="Michael R. Bagnall <mbagnall@zivtech.com>"
 LABEL vendor="ProboCI, LLC."
 
-ENV TERM xterm
+ENV TERM=xterm
 
-ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/src/vendor/bin:/src/vendor/drush/drush:/src/docroot/vendor/drush/drush
+ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/src/vendor/bin:/src/vendor/drush/drush:/src/docroot/vendor/drush/drush
 
 # Copy our Alpine compiled iconv library
 COPY files/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
@@ -44,7 +44,7 @@ RUN apk update && \
 RUN ln -s /usr/bin/php83 /bin/php
 
 # Attempt to resolve our iconv problems
-ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
+ENV LD_PRELOAD="/usr/lib/preloadable_libiconv.so php"
 
 # Install composer and drush.
 RUN apk add php83-cli && curl -sS https://getcomposer.org/installer | php -- \
@@ -94,9 +94,9 @@ RUN addgroup mysql mysql && \
   chmod 755 /etc/init.d/mysql
 
 # Setup Apache SOLR
-ENV SOLR_USER root
-ENV SOLR_UID 8983
-ENV SOLR_VERSION 9.6.1
+ENV SOLR_USER=root
+ENV SOLR_UID=8983
+ENV SOLR_VERSION=9.6.1
 RUN mkdir -p /opt/solr && \
   wget -nv --output-document=/opt/solr.tgz https://proofroom.s3.amazonaws.com/solr-$SOLR_VERSION.tgz && \
   cd /opt && \
