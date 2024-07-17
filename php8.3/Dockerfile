@@ -28,7 +28,7 @@ RUN apk update && \
   apk add --no-cache \
   openrc nodejs mariadb mariadb-client php83-apache2 wget bash \
   php83 php83-bcmath php83-bz2 php83-curl php83-dba php83-ldap php83-mbstring php83-mysqli \
-  php83-opcache php83-pdo_mysql php83-pdo_pgsql php83-soap php83-xml php83-zip php83-pecl-redis \
+  php83-opcache php83-fileinfo php83-pdo_mysql php83-pdo_pgsql php83-soap php83-xml php83-zip php83-pecl-redis \
   php83-pecl-memcached openjdk11-jre php83-pear git vim zip gzip bzip2 pv rsync curl php83-cgi \
   php83-common sudo php83-simplexml php83-cli mlocate php83-phar php83-dom php83-tokenizer \
   mariadb-openrc apache2-ctl npm redis memcached ncurses php83-ctype php83-iconv apache2-proxy \

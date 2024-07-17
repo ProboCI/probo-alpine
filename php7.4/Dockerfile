@@ -31,7 +31,7 @@ RUN apk update && \
   apk add --no-cache \
   openrc nodejs mariadb mariadb-client php7-apache2 wget bash \
   php7 php7-bcmath php7-bz2 php7-curl php7-dba php7-ldap php7-mbstring php7-mysqli \
-  php7-opcache php7-pdo_mysql php7-pdo_pgsql php7-soap php7-xml php7-zip php7-pecl-redis \
+  php7-opcache php7-fileinfo php7-pdo_mysql php7-pdo_pgsql php7-soap php7-xml php7-zip php7-pecl-redis \
   php7-pecl-memcached openjdk8-jre php7-pear git vim zip gzip bzip2 pv rsync curl php7-cgi \
   php7-common sudo php7-simplexml php7-cli mlocate php7-phar php7-dom php7-tokenizer \
   mariadb-openrc apache2-ctl npm redis memcached ncurses php7-ctype php7-iconv apache2-proxy \

@@ -28,7 +28,7 @@ RUN apk update && \
   apk add --no-cache \
   openrc nodejs mariadb mariadb-client php8-apache2 wget bash \
   php8 php8-bcmath php8-bz2 php8-curl php8-dba php8-ldap php8-mbstring php8-mysqli \
-  php8-opcache php8-pdo_mysql php8-pdo_pgsql php8-soap php8-xml php8-zip php8-pecl-redis \
+  php8-opcache php8-fileinfo php8-pdo_mysql php8-pdo_pgsql php8-soap php8-xml php8-zip php8-pecl-redis \
   php8-pecl-memcached openjdk11-jre php8-pear git vim zip gzip bzip2 pv rsync curl php8-cgi \
   php8-common sudo php8-simplexml php8-cli mlocate php8-phar php8-dom php8-tokenizer \
   mariadb-openrc apache2-ctl npm redis memcached ncurses php8-ctype php8-iconv apache2-proxy \
