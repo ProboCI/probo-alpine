@@ -16,9 +16,9 @@ LABEL description="ProboCI's PHP 8.1 image based off Alpine Linux"
 LABEL author="Michael R. Bagnall <mbagnall@zivtech.com>"
 LABEL vendor="ProboCI, LLC."
 
-ENV TERM xterm
+ENV TERM=xterm
 
-ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/src/vendor/bin:/src/vendor/drush/drush:/src/docroot/vendor/drush/drush
+ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/src/vendor/bin:/src/vendor/drush/drush:/src/docroot/vendor/drush/drush
 
 # Copy our Alpine compiled iconv library
 COPY files/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
@@ -28,7 +28,7 @@ RUN apk update && \
   apk add --no-cache \
   openrc nodejs mariadb mariadb-client php81-apache2 wget bash \
   php81 php81-bcmath php81-bz2 php81-curl php81-dba php81-ldap php81-mbstring php81-mysqli \
-  php81-opcache php81-pdo_mysql php81-pdo_pgsql php81-soap php81-xml php81-zip php81-pecl-redis \
+  php81-opcache php81-pdo_mysql php81-fileinfo php81-pdo_pgsql php81-soap php81-xml php81-zip php81-pecl-redis \
   php81-pecl-memcached openjdk11-jre php81-pear git vim zip gzip bzip2 pv rsync curl php81-cgi \
   php81-common sudo php81-simplexml php81-cli mlocate php81-phar php81-dom php81-tokenizer \
   mariadb-openrc apache2-ctl npm redis memcached ncurses php81-ctype php81-iconv apache2-proxy \
@@ -44,7 +44,7 @@ RUN apk update && \
 RUN ln -s /usr/bin/php81 /bin/php
 
 # Attempt to resolve our iconv problems
-ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
+ENV LD_PRELOAD="/usr/lib/preloadable_libiconv.so php"
 
 # Install composer and drush.
 RUN apk add php81-cli && curl -sS https://getcomposer.org/installer | php -- \
@@ -94,9 +94,9 @@ RUN addgroup mysql mysql && \
   chmod 755 /etc/init.d/mysql
 
 # Setup Apache SOLR
-ENV SOLR_USER root
-ENV SOLR_UID 8983
-ENV SOLR_VERSION 9.6.1
+ENV SOLR_USER=root
+ENV SOLR_UID=8983
+ENV SOLR_VERSION=9.6.1
 RUN mkdir -p /opt/solr && \
   wget -nv --output-document=/opt/solr.tgz https://proofroom.s3.amazonaws.com/solr-$SOLR_VERSION.tgz && \
   cd /opt && \
