@@ -33,7 +33,7 @@ RUN apk update && \
   php82-common sudo php82-simplexml php82-cli mlocate php82-phar php82-dom php82-tokenizer \
   mariadb-openrc apache2-ctl npm redis memcached ncurses php82-ctype php82-iconv apache2-proxy \
   php82-gd gnu-libiconv apache2-ssl php82-xmlreader php82-xmlwriter imagemagick-pdf \
-  php82-pecl-mongodb php82-pecl-imagick nano php82-pdo_sqlite sqlite procps lsof
+  php82-pecl-mongodb php82-pecl-imagick nano php82-pdo_sqlite sqlite procps lsof patch nano
 
 # Run freshclam to get our clam database
 # RUN apk add clamav clamav-db
@@ -60,7 +60,7 @@ RUN npm install -g gulp
 
 # Install Terminus Pantheon command line tool, https://pantheon.io/docs/terminus.
 RUN mkdir ~/terminus && cd ~/terminus \
-  && curl -L https://github.com/pantheon-systems/terminus/releases/download/3.3.5/terminus.phar --output terminus \
+  && curl -L https://github.com/pantheon-systems/terminus/releases/download/3.5.2/terminus.phar --output terminus \
   && chmod +x terminus \
   && ln -s ~/terminus/terminus /bin/terminus
 
@@ -105,9 +105,9 @@ RUN mkdir -p /opt/solr && \
   mkdir -p /opt/solr/server/solr/lib && \
   chown -R $SOLR_USER:$SOLR_USER /opt/solr \
   && /opt/solr/bin/solr -force \
-  && wget https://ftp.drupal.org/files/projects/search_api_solr-4.3.3.tar.gz \
+  && wget https://ftp.drupal.org/files/projects/search_api_solr-4.3.5.tar.gz \
   && rm -rf /opt/solr/search_api_solr \
-  && tar xzf search_api_solr-4.3.3.tar.gz \
+  && tar xzf search_api_solr-4.3.5.tar.gz \
   && mv search_api_solr /opt/solr/. \
   && /opt/solr/bin/solr create -c drupal -d "/opt/solr/search_api_solr/jump-start/solr9/config-set" -force \
   && /opt/solr/bin/solr create -c drupal8 -d "/opt/solr/search_api_solr/jump-start/solr9/config-set" -force \

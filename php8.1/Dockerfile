@@ -33,7 +33,7 @@ RUN apk update && \
   php81-common sudo php81-simplexml php81-cli mlocate php81-phar php81-dom php81-tokenizer \
   mariadb-openrc apache2-ctl npm redis memcached ncurses php81-ctype php81-iconv apache2-proxy \
   php81-gd gnu-libiconv apache2-ssl php81-xmlreader php81-xmlwriter imagemagick-pdf \
-  php81-pecl-mongodb php81-pecl-imagick nano php81-pdo_sqlite sqlite procps lsof
+  php81-pecl-mongodb php81-pecl-imagick nano php81-pdo_sqlite sqlite procps lsof patch nano
 
 # Run freshclam to get our clam database
 # RUN apk add clamav clamav-db
@@ -106,9 +106,9 @@ RUN mkdir -p /opt/solr && \
   mkdir -p /opt/solr/server/solr/lib && \
   chown -R $SOLR_USER:$SOLR_USER /opt/solr \
   && /opt/solr/bin/solr -force \
-  && wget https://ftp.drupal.org/files/projects/search_api_solr-4.3.3.tar.gz \
+  && wget https://ftp.drupal.org/files/projects/search_api_solr-4.3.5.tar.gz \
   && rm -rf /opt/solr/search_api_solr \
-  && tar xzf search_api_solr-4.3.3.tar.gz \
+  && tar xzf search_api_solr-4.3.5.tar.gz \
   && mv search_api_solr /opt/solr/. \
   && /opt/solr/bin/solr create -c drupal -d "/opt/solr/search_api_solr/jump-start/solr9/config-set" -force \
   && /opt/solr/bin/solr create -c drupal8 -d "/opt/solr/search_api_solr/jump-start/solr9/config-set" -force \

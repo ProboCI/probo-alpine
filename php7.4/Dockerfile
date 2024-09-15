@@ -36,7 +36,7 @@ RUN apk update && \
   php7-common sudo php7-simplexml php7-cli mlocate php7-phar php7-dom php7-tokenizer \
   mariadb-openrc apache2-ctl npm redis memcached ncurses php7-ctype php7-iconv apache2-proxy \
   php7-gd gnu-libiconv apache2-ssl php7-xmlreader php7-xmlwriter \
-  php7-pecl-mongodb php7-pecl-imagick nano php7-pdo_sqlite sqlite
+  php7-pecl-mongodb php7-pecl-imagick nano php7-pdo_sqlite sqlite nano patch
 
 # Run freshclam to get our clam database
 # RUN apk add clamav clamav-db
@@ -67,7 +67,7 @@ RUN npm install -g gulp
 
 # Install Terminus Pantheon command line tool, https://pantheon.io/docs/terminus.
 RUN mkdir ~/terminus && cd ~/terminus \
-  && curl -L https://github.com/pantheon-systems/terminus/releases/download/3.3.5/terminus.phar --output terminus \
+  && curl -L https://github.com/pantheon-systems/terminus/releases/download/3.5.2terminus.phar --output terminus \
   && chmod +x terminus \
   && ln -s ~/terminus/terminus /bin/terminus
 
@@ -116,9 +116,9 @@ RUN mkdir -p /opt/solr && \
   && tar xzf search_api_solr-7.x-1.16.tar.gz \
   && mv search_api_solr /opt/solr/. \
   && /opt/solr/bin/solr create -c drupal7 -d "/opt/solr/search_api_solr/solr-conf/7.x" -force \
-  && wget https://ftp.drupal.org/files/projects/search_api_solr-4.3.0.tar.gz \
+  && wget https://ftp.drupal.org/files/projects/search_api_solr-4.3.5.tar.gz \
   && rm -rf /opt/solr/search_api_solr \
-  && tar xzf search_api_solr-4.3.0.tar.gz \
+  && tar xzf search_api_solr-4.3.5.tar.gz \
   && mv search_api_solr /opt/solr/. \
   && /opt/solr/bin/solr create -c drupal -d "/opt/solr/search_api_solr/jump-start/solr7/config-set" -force \
   && /opt/solr/bin/solr create -c drupal8 -d "/opt/solr/search_api_solr/jump-start/solr7/config-set" -force \
