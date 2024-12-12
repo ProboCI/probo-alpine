@@ -123,6 +123,9 @@ COPY files/httpd.conf /etc/apache2/httpd.conf
 COPY files/listen_8080.conf /etc/apache2/conf.d/listen_8080.conf
 RUN mkdir -p /var/www/html
 
+COPY files/envvars.conf /etc/apache2/conf.d/envvars.conf
+COPY files/envvars-swap.sh /envvars-swap.sh
+
 COPY files/valid-user.sh /bin/valid
 RUN chmod 755 /bin/versionizer /bin/valid
 
