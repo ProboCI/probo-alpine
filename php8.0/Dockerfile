@@ -20,8 +20,8 @@ ENV TERM=xterm
 
 ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/src/vendor/bin:/src/vendor/drush/drush:/src/docroot/vendor/drush/drush
 
-# Copy our Alpine compiled iconv library
-COPY files/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
+# Compensate for the removal of iconv
+RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.12/community/ --allow-untrusted gnu-libiconv=1.15-r2
 
 # Install all of our base packages for making the image work.
 RUN apk update && \
@@ -35,19 +35,8 @@ RUN apk update && \
   php8-gd gnu-libiconv apache2-ssl php8-xmlreader php8-xmlwriter \
   php8-pecl-mongodb php8-pecl-imagick nano php8-pdo_sqlite sqlite procps lsof nano patch
 
-# Run freshclam to get our clam database
-# RUN apk add clamav clamav-db
-# COPY files/clamd.conf /etc/clamav/clamd.conf
-# RUN mkdir -p /run/clamav/ && freshclam && clamd
-
 # By default, alpine puts PHP in as "php7" or "php8". We need to homogenize it.
 RUN ln -s /usr/bin/php8 /bin/php
-
-# Attempt to resolve our iconv problems
-ENV LD_PRELOAD="/usr/lib/preloadable_libiconv.so php"
-
-# For compatibility with Ubuntu, create a symlink to chromedriver from the Ubuntu location.
-# RUN ln -s /usr/bin/chromedriver /usr/local/bin/chromedriver
 
 # Install composer and drush.
 RUN apk add php8-cli && curl -sS https://getcomposer.org/installer | php -- \

@@ -16,12 +16,12 @@ LABEL description="ProboCI's PHP 8.2 image based off Alpine Linux"
 LABEL author="Michael R. Bagnall <mbagnall@zivtech.com>"
 LABEL vendor="ProboCI, LLC."
 
-ENV TERM xterm
+ENV TERM=xterm
 
-ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/src/vendor/bin:/src/vendor/drush/drush:/src/docroot/vendor/drush/drush
+ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/src/vendor/bin:/src/vendor/drush/drush:/src/docroot/vendor/drush/drush
 
-# Copy our Alpine compiled iconv library
-COPY files/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
+# Compensate for the removal of iconv
+RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.12/community/ --allow-untrusted gnu-libiconv=1.15-r2
 
 # Install all of our base packages for making the image work.
 RUN apk update && \
@@ -35,15 +35,7 @@ RUN apk update && \
   php82-gd gnu-libiconv apache2-ssl php82-xmlreader php82-xmlwriter imagemagick-pdf \
   php82-pecl-mongodb php82-pecl-imagick nano php82-pdo_sqlite sqlite procps lsof patch nano
 
-# Run freshclam to get our clam database
-# RUN apk add clamav clamav-db
-# COPY files/clamd.conf /etc/clamav/clamd.conf
-# RUN mkdir -p /run/clamav/ && freshclam && clamd
-
 RUN ln -s /usr/bin/php82 /bin/php
-
-# Attempt to resolve our iconv problems
-ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 # Install composer and drush.
 RUN apk add php82-cli && curl -sS https://getcomposer.org/installer | php -- \
