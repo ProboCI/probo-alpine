@@ -32,11 +32,11 @@ RUN apk update && \
   openrc nodejs mariadb mariadb-client php7-apache2 wget bash \
   php7 php7-bcmath php7-bz2 php7-curl php7-dba php7-ldap php7-mbstring php7-mysqli \
   php7-opcache php7-fileinfo php7-pdo_mysql php7-pdo_pgsql php7-soap php7-xml php7-zip php7-pecl-redis \
-  php7-pecl-memcached openjdk8-jre php7-pear git vim zip gzip bzip2 pv rsync curl php7-cgi \
+  php7-pecl-memcached openjdk17-jre php7-pear git vim zip gzip bzip2 pv rsync curl php7-cgi \
   php7-common sudo php7-simplexml php7-cli mlocate php7-phar php7-dom php7-tokenizer \
   mariadb-openrc apache2-ctl npm redis memcached ncurses php7-ctype php7-iconv apache2-proxy \
   php7-gd gnu-libiconv apache2-ssl php7-xmlreader php7-xmlwriter \
-  php7-pecl-mongodb php7-pecl-imagick nano php7-pdo_sqlite sqlite nano patch
+  php7-pecl-mongodb php7-pecl-imagick nano php7-pdo_sqlite sqlite nano patch procps lsof
 
 # By default, alpine puts PHP in as "php7" or "php7". We need to homogenize it.
 RUN ln -s /usr/bin/php7 /bin/php
@@ -91,8 +91,8 @@ RUN addgroup mysql mysql && \
 # Setup Apache SOLR
 ENV SOLR_USER=root
 ENV SOLR_UID=8983
-ENV SOLR_VERSION=7.7.3
-RUN mkdir -p /opt/solr && \
+ENV SOLR_VERSION=8.11.4
+RUN mkdir /opt/solr && \
   wget -nv --output-document=/opt/solr.tgz https://proofroom.s3.amazonaws.com/solr-$SOLR_VERSION.tgz && \
   cd /opt && \
   tar xzf solr.tgz && \
@@ -101,16 +101,16 @@ RUN mkdir -p /opt/solr && \
   mkdir -p /opt/solr/server/solr/lib && \
   chown -R $SOLR_USER:$SOLR_USER /opt/solr \
   && /opt/solr/bin/solr -force \
-  && wget https://ftp.drupal.org/files/projects/search_api_solr-7.x-1.16.tar.gz \
-  && tar xzf search_api_solr-7.x-1.16.tar.gz \
+  && wget https://ftp.drupal.org/files/projects/search_api_solr-7.x-1.17.tar.gz \
+  && tar xzf search_api_solr-7.x-1.17.tar.gz \
   && mv search_api_solr /opt/solr/. \
-  && /opt/solr/bin/solr create -c drupal7 -d "/opt/solr/search_api_solr/solr-conf/7.x" -force \
-  && wget https://ftp.drupal.org/files/projects/search_api_solr-4.3.5.tar.gz \
+  && /opt/solr/bin/solr create -c drupal7 -d "/opt/solr/search_api_solr/solr-conf/8.x" -force \
+  && wget https://ftp.drupal.org/files/projects/search_api_solr-4.3.10.tar.gz \
   && rm -rf /opt/solr/search_api_solr \
-  && tar xzf search_api_solr-4.3.5.tar.gz \
+  && tar xzf search_api_solr-4.3.10.tar.gz \
   && mv search_api_solr /opt/solr/. \
-  && /opt/solr/bin/solr create -c drupal -d "/opt/solr/search_api_solr/jump-start/solr7/config-set" -force \
-  && /opt/solr/bin/solr create -c drupal8 -d "/opt/solr/search_api_solr/jump-start/solr7/config-set" -force \
+  && /opt/solr/bin/solr create -c drupal -d "/opt/solr/search_api_solr/jump-start/solr8/config-set" -force \
+  && /opt/solr/bin/solr create -c drupal8 -d "/opt/solr/search_api_solr/jump-start/solr8/config-set" -force \
   && /opt/solr/bin/solr stop -all
 
 COPY files/mysql-setup.sql /mysql-setup.sql
