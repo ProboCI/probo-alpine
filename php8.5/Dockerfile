@@ -3,18 +3,18 @@
 # These images are built using Dockerfile inheritance to build the images used for Probo.CI.
 #
 # Image: proboci/alpine
-# Tag: php8.4
+# Tag: php8.5
 # 
-# Build the proboci/alpine:php8.4
-# docker build . -t proboci/alpine:php8.4
-# docker push proboci/alpine:php8.4
+# Build the proboci/alpine:php8.5
+# docker build . -t proboci/alpine:php8.5
+# docker push proboci/alpine:php8.5
 
 FROM alpine:edge
 
 LABEL name="ProboCI PHP 8.5 Image"
 LABEL description="ProboCI's PHP 8.5 image based off Alpine Linux"
-LABEL author="Michael R. Bagnall <mbagnall@zivtech.com>"
-LABEL vendor="ProboCI, LLC."
+LABEL author="Michael R. Bagnall <mbagnall@flyingflip.com>"
+LABEL vendor="FlyingFlip Studios, LLC."
 
 ENV TERM=xterm
 
@@ -35,7 +35,7 @@ RUN apk update && \
   apk add --no-cache \
   openrc nodejs mariadb mariadb-client php85-apache2 wget bash \
   php85 php85-bcmath php85-bz2 php85-curl php85-dba php85-ldap php85-mbstring php85-mysqli \
-  php85-opcache php85-fileinfo php85-pdo_mysql php85-pdo_pgsql php85-soap php85-xml php85-zip \
+  php85-fileinfo php85-pdo_mysql php85-pdo_pgsql php85-soap php85-xml php85-zip \
   openjdk11-jre php85-pear git vim zip gzip bzip2 pv rsync curl php85-cgi \
   php85-common sudo php85-simplexml php85-cli mlocate php85-phar php85-dom php85-tokenizer \
   mariadb-openrc apache2-ctl npm redis memcached ncurses php85-ctype php85-iconv apache2-proxy \
