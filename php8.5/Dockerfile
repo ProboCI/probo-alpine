@@ -95,7 +95,7 @@ RUN addgroup mysql mysql && \
 # Setup Apache SOLR
 ENV SOLR_USER=root
 ENV SOLR_UID=8984
-ENV SOLR_VERSION=8.11.4
+ENV SOLR_VERSION=9.9.0
 RUN mkdir -p /opt/solr && \
   wget -nv --output-document=/opt/solr.tgz https://proofroom.s3.amazonaws.com/solr-$SOLR_VERSION.tgz && \
   cd /opt && \
@@ -109,8 +109,8 @@ RUN mkdir -p /opt/solr && \
   && rm -rf /opt/solr/search_api_solr \
   && tar xzf search_api_solr-4.3.10.tar.gz \
   && mv search_api_solr /opt/solr/. \
-  && /opt/solr/bin/solr create -c drupal -d "/opt/solr/search_api_solr/jump-start/solr8/config-set" -force \
-  && /opt/solr/bin/solr create -c drupal8 -d "/opt/solr/search_api_solr/jump-start/solr8/config-set" -force \
+  && /opt/solr/bin/solr create -c drupal -n "/opt/solr/search_api_solr/jump-start/solr8/config-set" \
+  && /opt/solr/bin/solr create -c drupal8 -n "/opt/solr/search_api_solr/jump-start/solr8/config-set" \
   && /opt/solr/bin/solr stop -all
 
 COPY files/mysql-setup.sql /mysql-setup.sql
